@@ -16,7 +16,7 @@ setuptools.setup(
     url="https://github.com/OMKE/springleaf",
     packages=setuptools.find_packages(),
     py_modules=["cli", "generator"],
-    install_required=["jinja2", "javalang", "PyInquirer"],
+    install_required=["jinja2", "javalang", "PyInquirer", "pyyaml"],
     classifiers=[
         "Programming Language :: Python :: 3",
          "License :: OSI Approved :: MIT License",
