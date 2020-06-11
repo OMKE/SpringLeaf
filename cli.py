@@ -4,11 +4,15 @@ from __future__ import print_function, unicode_literals
 import os
 from pprint import pprint
 
-from PyInquirer import Separator, Token, prompt, style_from_dict
+from PyInquirer import (Separator, Token, ValidationError, Validator, prompt,
+                        style_from_dict)
 
 from generator import Generator
 from utils.file_handler import FileHandler
-from utils.prompt import Prompt
+from utils.handlers.name_handler import NameHandler
+# Handlers
+from utils.handlers.project_structure_handler import ProjectStructureHandler
+from utils.prompt_builder import PromptBuilder
 
 """
 CLI
@@ -22,6 +26,15 @@ style = style_from_dict({
 })
 
 
+class NameValidator(Validator):
+    def validate(self, document):
+        if len(document.text) < 3:
+            raise ValidationError(
+                message="Name can not be shorter than 3 chars",
+                cursor_position=len(document.text)
+            )
+
+
 class CLI:
 
     def __init__(self):
@@ -31,11 +44,11 @@ class CLI:
 
     def setup(self):
         # self.generator.generate()
-        FileHandler.create_config_file([])
-        self.show_list()
-
-    def show_list(self):
-        self.ask_for_project_structure()
+        if(FileHandler.has_config_file()):
+            # Do validaiton
+            pass
+        else:
+            self.ask_for_project_structure()
 
     """
     ask_for_project_structure
@@ -45,11 +58,14 @@ class CLI:
     """
 
     def ask_for_project_structure(self):
-        prompt = Prompt()
-        prompt.add_question("list", "Which project structure to use?", "structure",
-                            self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}])
-        answers = prompt.ask()
-        pprint(answers)
+        prompt = PromptBuilder().add_type("list").add_message("Which project structure to use?").add_name("structure").add_choices(
+            self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]).add_handler(
+                ProjectStructureHandler).ask()
+        prompt.handle()
+
+        prompt = PromptBuilder().add_type("input").add_message(
+            "What's your name?").add_name("name").add_handler(NameHandler).add_validator(NameValidator).ask()
+        prompt.handle()
 
     def config_file_options(self, options: dict):
 

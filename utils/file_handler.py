@@ -85,6 +85,13 @@ class FileHandler:
         with open(FileHandler.current_dir() + "/springleaf.yaml", "w") as file:
             config = yaml.dump(options_to_write, file)
 
+    @staticmethod
+    def has_config_file():
+        if FileHandler.search(FileHandler.current_dir(), "springleaf.yaml"):
+            return True
+        else:
+            return False
+
     """
     get_project_structures
     @desc:
