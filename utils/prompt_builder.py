@@ -4,56 +4,105 @@ from __future__ import print_function, unicode_literals
 from PyInquirer import (Separator, Token, ValidationError, Validator, prompt,
                         style_from_dict)
 
+from .exceptions import QuestionNotCreatedException
+
+
+class NameValidator(Validator):
+    def validate(self, document):
+        if len(document.text) < 3:
+            raise ValidationError(
+                message="Name can not be shorter than 3 chars",
+                cursor_position=len(document.text)
+            )
+
 
 class PromptBuilder:
 
-    FAIL = '\033[91m'
-
     def __init__(self):
-        self.question = {}
-        self.handler = None
+        self.questions = []
+        self.handlers = []
         self.style = style_from_dict({
             Token.Pointer: "#83E774",
             Token.QuestionMark: "#ffd738"
         })
 
-    def add_type(self, type):
-        self.question["type"] = type
+    def create_question(self):
+        self.questions.append({})
         return self
 
-    def add_message(self, message):
-        self.question["message"] = message
+    def get_question(self):
+        try:
+            return self.questions[-1]
+        except IndexError:
+            raise QuestionNotCreatedException
+
+    def set_type(self, type):
+        self.get_question()["type"] = type
+
         return self
 
-    def add_name(self, name):
-        self.question["name"] = name
+    def set_message(self, message):
+
+        self.get_question()["message"] = message
+
         return self
 
-    def add_choices(self, choices):
-        self.question["choices"] = [choice for choice in choices]
+    def set_name(self, name):
+
+        self.get_question()["name"] = name
+
         return self
 
-    def add_validator(self, validator):
-        self.question["validate"] = validator
+    def set_choices(self, choices):
+
+        self.get_question()["choices"] = [choice for choice in choices]
+
         return self
 
-    def add_default(self, bool=False):
-        self.question["default"] = bool
+    def validator(self, name):
+        validators = {
+            "NameValidator": NameValidator
+        }
+        return validators[name]
 
-    def add_handler(self, handler):
-        self.handler = handler()
+    def set_validator(self, name):
+
+        self.get_question()["validate"] = self.validator(name)
+
         return self
 
-    def ask(self):
-        self.answers = prompt([self.question], style=self.style)
+    def set_default(self, bool=False):
+
+        self.get_question()["default"] = bool
+
         return self
+
+    def set_handler(self, handler):
+        self.handlers.append(handler())
+        return self
+
+    """
+    prompt
+    @desc:
+        Initializes prompt
+    @return: PromptBuilder - self
+    """
+
+    def prompt(self, handle=False):
+        self.answers = prompt(self.questions, style=self.style)
+        if handle:
+            self.handle()
+        return self
+
+    """
+    handle
+    @desc:
+        Maps handlers to questions
+    @return: void - 
+    """
 
     def handle(self):
-        try:
-            try:
-                self.handler.handle(self.answers)
-            except AttributeError:
-                print(
-                    f"{PromptBuilder.FAIL} Handlers were called but prompt wasn't initialized")
-        except KeyError:
-            self.handler.handle(self.answers)
+        for handler in self.handlers:
+            for _ in self.answers:
+                handler.handle(dict(self.answers).get(handler.name()))
+                break
