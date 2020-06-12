@@ -4,8 +4,10 @@ from __future__ import print_function, unicode_literals
 import os
 from pprint import pprint
 
+from pyfiglet import Figlet
 from PyInquirer import (Separator, Token, ValidationError, Validator, prompt,
                         style_from_dict)
+from rich.console import Console
 
 from generator import Generator
 from utils.file_handler import FileHandler
@@ -27,7 +29,7 @@ class CLI:
 
     def __init__(self):
         self.generator = Generator()
-
+        self.console = Console()
         self.setup()
 
     def setup(self):
@@ -46,6 +48,9 @@ class CLI:
     """
 
     def ask_for_project_structure(self):
+        heading = Figlet(font="slant")
+        self.console.print(heading.renderText(
+            "SpringLeaf CLI"), style="green bold")
         prompt = PromptBuilder().create_question().set_type("list").set_message("Which project structure to use?").set_name("structure").set_choices(
             self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]).set_handler(
                 ProjectStructureHandler)
