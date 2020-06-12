@@ -9,30 +9,18 @@ from PyInquirer import (Separator, Token, ValidationError, Validator, prompt,
 
 from generator import Generator
 from utils.file_handler import FileHandler
+from utils.handlers.checkbox_handler import CheckBoxHandler
 from utils.handlers.name_handler import NameHandler
 # Handlers
 from utils.handlers.project_structure_handler import ProjectStructureHandler
 from utils.prompt_builder import PromptBuilder
+
 
 """
 CLI
 @desc:
     Main class
 """
-
-
-style = style_from_dict({
-    Token.Pointer: "#83E774"
-})
-
-
-class NameValidator(Validator):
-    def validate(self, document):
-        if len(document.text) < 3:
-            raise ValidationError(
-                message="Name can not be shorter than 3 chars",
-                cursor_position=len(document.text)
-            )
 
 
 class CLI:
@@ -45,7 +33,7 @@ class CLI:
     def setup(self):
         # self.generator.generate()
         if(FileHandler.has_config_file()):
-            # Do validaiton
+            # Do validaiton of config file
             pass
         else:
             self.ask_for_project_structure()
@@ -58,14 +46,11 @@ class CLI:
     """
 
     def ask_for_project_structure(self):
-        prompt = PromptBuilder().add_type("list").add_message("Which project structure to use?").add_name("structure").add_choices(
-            self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]).add_handler(
-                ProjectStructureHandler).ask()
-        prompt.handle()
+        prompt = PromptBuilder().create_question().set_type("list").set_message("Which project structure to use?").set_name("structure").set_choices(
+            self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]).set_handler(
+                ProjectStructureHandler)
 
-        prompt = PromptBuilder().add_type("input").add_message(
-            "What's your name?").add_name("name").add_handler(NameHandler).add_validator(NameValidator).ask()
-        prompt.handle()
+        prompt.prompt(handle=True)
 
     def config_file_options(self, options: dict):
 
