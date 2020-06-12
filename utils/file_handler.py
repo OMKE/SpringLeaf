@@ -18,7 +18,7 @@ class FileHandler:
     @desc:
         Searches for file with given path
     @params:
-        path - path, 
+        path - path,
         file - file to search
         absolute [False] - returns full path of file
     @return: file_name - returns a file name if file is found
@@ -77,13 +77,14 @@ class FileHandler:
     create_config_file
     @desc:
         Creates config file in which we can save project structure and future possible features
-    @return: void - 
+    @return: void -
     """
 
     @staticmethod
     def create_config_file(options_to_write: list):
         with open(FileHandler.current_dir() + "/springleaf.yaml", "w") as file:
-            config = yaml.dump(options_to_write, file)
+            file.write("# SpringLeaf CLI - http://github.com/OMKE/SpringLeaf\n")
+            config = yaml.dump(options_to_write, file, indent=4)
 
     @staticmethod
     def has_config_file():
@@ -104,3 +105,9 @@ class FileHandler:
         with open(FileHandler.script_dir() + "/common/project_structures.json", 'r') as file:
             structures = json.load(file)
             return structures
+
+    @staticmethod
+    def get_project_structure(name):
+        for i in FileHandler.get_project_structures():
+            if i["name"] == name:
+                return i
