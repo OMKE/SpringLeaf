@@ -34,11 +34,16 @@ class CLI:
 
     def setup(self):
         # self.generator.generate()
-        if(FileHandler.has_config_file()):
-            # Do validaiton of config file
-            pass
+        if(FileHandler.is_spring_dir()):
+            if(FileHandler.has_config_file()):
+                # Do validaiton of config file
+                pass
+            else:
+                self.ask_for_project_structure()
         else:
-            self.ask_for_project_structure()
+            self.console.print("Not a Spring Boot project", style="red bold")
+            self.console.print(
+                "Create new project with \n$ springleaf new <name>", style="yellow bold")
 
     """
     ask_for_project_structure

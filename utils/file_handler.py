@@ -52,10 +52,13 @@ class FileHandler:
 
     @staticmethod
     def read_file(path):
-        file = open(path)
-        content = file.read()
-        file.close()
-        return content
+        try:
+            file = open(path)
+            content = file.read()
+            file.close()
+            return content
+        except TypeError:
+            return None
 
     """
     current_dir
@@ -111,3 +114,46 @@ class FileHandler:
         for i in FileHandler.get_project_structures():
             if i["name"] == name:
                 return i
+
+    @staticmethod
+    def is_spring_dir():
+        if FileHandler.is_executable(
+                FileHandler.search(FileHandler.current_dir(), "gradlew", absolute=True)) or FileHandler.is_executable(
+                FileHandler.search(FileHandler.current_dir(), "mvnw", absolute=True)):
+            return True
+
+        return False
+
+    @staticmethod
+    def is_executable(path):
+        maven_meta = "#!/bin/sh"
+        gradle_meta = "#!/usr/bin/env sh"
+        file = FileHandler.read_file(path)
+        if file:
+            if file[0:9] == maven_meta or file[0:17] == gradle_meta:
+                return True
+
+        return False
+
+    @staticmethod
+    def is_maven(path=None):
+        if path is None:
+            path = FileHandler.current_dir() + "/mvnw"
+        maven_meta = "#!/bin/sh"
+        file = FileHandler.read_file(path)
+        if file:
+            if file[0:9] == maven_meta:
+                return True
+        return False
+
+    @staticmethod
+    def is_gradle(path=None):
+        if path is None:
+            path = FileHandler.current_dir() + "/gradlew"
+        gradle_meta = "#!/usr/bin/env sh"
+        file = FileHandler.read_file(path)
+        if file:
+            if file[0:17] == gradle_meta:
+                return True
+
+        return False
