@@ -10,7 +10,7 @@
 
 <details><summary>Version: 0.1.2</summary>
     Windows: <br>
-        - Moved from PyInquirer(not in development) to [questionary](https://github.com/tmbo/questionary/) , error was still appearing in CommandPrompt <br>
+        - Moved from PyInquirer(not in development) to <a href="https://github.com/tmbo/questionary/">questionary</a> , error was still appearing in CommandPrompt <br>
         - Founded out that everything works in Cmder when started in bash <br>
         - Should be tested more on Windows
         - prompt_toolkit version: 3.0.2
