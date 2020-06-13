@@ -1,0 +1,4 @@
+
+
+class QuestionNotCreatedException(Exception):
+    pass

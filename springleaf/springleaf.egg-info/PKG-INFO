@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: springleaf
+Version: 0.1
+Summary: Spring Boot Code Generator
+Home-page: https://github.com/OMKE/springleaf
+Author: Omar Iriskic
+Author-email: contact@omaririskic.com
+License: UNKNOWN
+Description: # Spring Leaf
+        
+        ## Spring Boot Command Line Interface for code generation
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown

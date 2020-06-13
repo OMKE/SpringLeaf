@@ -7,7 +7,7 @@ Author: Omar Iriskic
     https://github.com/OMKE
 """
 
-from cli import CLI
+from springleaf.cli import CLI
 
 if __name__ == "__main__":
     CLI()

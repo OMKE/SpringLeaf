@@ -1,0 +1,640 @@
+{
+  "project": ["Maven Project", "Gradle Project"],
+  "spring-boot-versions": [
+    "2.4 (SNAPSHOT)",
+    "2.3.1",
+    "2.3.1 (SNAPSHOT)",
+    "2.2.9 (SNAPSHOT)",
+    "2.2.8"
+  ],
+  "packaging": ["Jar", "War"],
+  "java-version": ["14", "11", "8"],
+  "dependencies": {
+    "groups": [
+      {
+        "name": "Developer Tools",
+        "values": [
+          {
+            "name": "Spring Boot DevTools",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-devtools"
+              },
+              {
+                "name": "scope",
+                "value": "runtime"
+              },
+              {
+                "name": "optional",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "name": "Lombok",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.projectlombok"
+              },
+              {
+                "name": "artifactId",
+                "value": "lombok"
+              },
+              {
+                "name": "optional",
+                "value": "true"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Web",
+        "values": [
+          {
+            "name": "Spring Web",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-web"
+              }
+            ]
+          },
+          {
+            "name": "Spring Reactive Web",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-webflux"
+              }
+            ]
+          },
+          {
+            "name": "Spring Session",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.session"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-session-core"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Template Engines",
+        "values": [
+          {
+            "name": "Thymeleaf",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-thymeleaf"
+              }
+            ]
+          },
+          {
+            "name": "Groovy Templates",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-groovy-templates"
+              }
+            ]
+          },
+          {
+            "name": "Mustache",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.session"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-mustache"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Security",
+        "values": [
+          {
+            "name": "Spring Security",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-security"
+              }
+            ]
+          },
+          {
+            "name": "JSON Web Token",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "io.jsonwebtoken"
+              },
+              {
+                "name": "artifactId",
+                "value": "jjwt"
+              },
+              {
+                "name": "version",
+                "value": "0.9.1"
+              }
+            ]
+          },
+          {
+            "name": "OAuth2 Client",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-oauth2-client"
+              }
+            ]
+          },
+          {
+            "name": "Oauth2 Resource Server",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-oauth2-resource-server"
+              }
+            ]
+          },
+          {
+            "name": "Okta",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "com.okta.spring"
+              },
+              {
+                "name": "artifactId",
+                "value": "okta-spring-boot-starter"
+              },
+              {
+                "name": "version",
+                "value": "1.4.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "SQL",
+        "values": [
+          {
+            "name": "JDBC API",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-data-jdbc"
+              }
+            ]
+          },
+          {
+            "name": "Spring Data JPA",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-data-jpa"
+              }
+            ]
+          },
+          {
+            "name": "Spring Data JDBC",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-jdbc"
+              }
+            ]
+          },
+          {
+            "name": "Liquibase Migration",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.liquibase"
+              },
+              {
+                "name": "artifactId",
+                "value": "liquibase-core"
+              }
+            ]
+          },
+          {
+            "name": "Flyway Migration",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.flywaydb"
+              },
+              {
+                "name": "artifactId",
+                "value": "flyway-core"
+              }
+            ]
+          },
+          {
+            "name": "H2 Database",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "com.h2database"
+              },
+              {
+                "name": "artifactId",
+                "value": "h2"
+              },
+              {
+                "name": "scope",
+                "value": "runtime"
+              }
+            ]
+          },
+          {
+            "name": "MySQL Driver",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "mysql"
+              },
+              {
+                "name": "artifactId",
+                "value": "mysql-connector-java"
+              },
+              {
+                "name": "scope",
+                "value": "runtime"
+              }
+            ]
+          },
+          {
+            "name": "Oracle Driver",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "com.oracle.ojdbc"
+              },
+              {
+                "name": "artifactId",
+                "value": "ojdbc8"
+              },
+              {
+                "name": "scope",
+                "value": "runtime"
+              }
+            ]
+          },
+          {
+            "name": "PostgreSQL Driver",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.postgresql"
+              },
+              {
+                "name": "artifactId",
+                "value": "postgresql"
+              },
+              {
+                "name": "scope",
+                "value": "runtime"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "NoSQL",
+        "values": [
+          {
+            "name": "Spring Data Redis",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-data-redis"
+              }
+            ]
+          },
+          {
+            "name": "Spring Data MongoDB",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-data-mongodb"
+              }
+            ]
+          },
+          {
+            "name": "Spring Data for Apache Cassandra",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-data-cassandra"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Messaging",
+        "values": [
+          {
+            "name": "Spring for RabbitMQ",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-amqp"
+              }
+            ]
+          },
+          {
+            "name": "Spring for Apache Kafka",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.kafka"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-kafka"
+              }
+            ]
+          },
+          {
+            "name": "Spring Data for Apache ActiveMQ Artemis",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-artemis"
+              }
+            ]
+          },
+          {
+            "name": "WebSocket",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-websocket"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "I/O",
+        "values": [
+          {
+            "name": "Spring Batch",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-batch"
+              }
+            ]
+          },
+          {
+            "name": "Validation",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-validation"
+              }
+            ]
+          },
+          {
+            "name": "Java Mail Sender ",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-mail"
+              }
+            ]
+          },
+          {
+            "name": "Quartz Scheduler",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-quartz"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "OPS",
+        "values": [
+          {
+            "name": "Spring Boot Actuator",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.boot"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-starter-actuator"
+              }
+            ]
+          },
+          {
+            "name": "Spring Boot Admin (Client)",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "de.codecentric"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-admin-starter-client"
+              }
+            ]
+          },
+          {
+            "name": "Spring Boot Admin (Server)",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "de.codecentric"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-boot-admin-starter-server"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Spring Cloud",
+        "values": [
+          {
+            "name": "Cloud Bootstrap",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.cloud"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-cloud-starter"
+              }
+            ]
+          },
+          {
+            "name": "Function",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.cloud"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-cloud-function-context"
+              }
+            ]
+          },
+          {
+            "name": "Task",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.cloud"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-cloud-starter-task"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Spring Cloud Security",
+        "values": [
+          {
+            "name": "Cloud Security",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.cloud"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-cloud-starter-security"
+              }
+            ]
+          },
+          {
+            "name": "Cloud OAuth2",
+            "attributes": [
+              {
+                "name": "groupId",
+                "value": "org.springframework.cloud"
+              },
+              {
+                "name": "artifactId",
+                "value": "spring-cloud-starter-oauth2"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

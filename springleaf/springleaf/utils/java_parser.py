@@ -2,8 +2,7 @@ from json import dumps, loads
 from pprint import pprint
 
 from javalang.parse import parse
-
-from .file_handler import FileHandler
+from springleaf.utils.file_handler import FileHandler
 
 
 class JavaParser:

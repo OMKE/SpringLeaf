@@ -1,0 +1,13 @@
+#! /usr/bin/env python
+
+"""
+Author: Omar Iriskic
+@contact:
+    https://omaririskic.com/
+    https://github.com/OMKE
+"""
+
+from springleaf.cli import CLI
+
+if __name__ == "__main__":
+    CLI()

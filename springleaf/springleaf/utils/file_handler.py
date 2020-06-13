@@ -2,6 +2,9 @@ import json
 import os
 
 import yaml
+from pkg_resources import resource_stream
+
+import springleaf
 
 
 """
@@ -105,7 +108,7 @@ class FileHandler:
 
     @staticmethod
     def get_project_structures():
-        with open(FileHandler.script_dir() + "/common/project_structures.json", 'r') as file:
+        with open(FileHandler.script_dir() + "common/project_structures.json", 'r') as file:
             structures = json.load(file)
             return structures
 
@@ -157,3 +160,14 @@ class FileHandler:
                 return True
 
         return False
+
+    @staticmethod
+    def version():
+        return FileHandler.get_src_file("version.json")["version"]
+
+    @staticmethod
+    def get_src_file(file_name, as_json=True):
+        if as_json:
+            return json.loads(resource_stream(springleaf.__name__, "common/" + file_name).read().decode())
+        else:
+            return resource_stream(springleaf.__name__, "common/" + file_name).read().decode()

@@ -9,13 +9,15 @@ from PyInquirer import (Separator, Token, ValidationError, Validator, prompt,
                         style_from_dict)
 from rich.console import Console
 
-from generator import Generator
-from utils.file_handler import FileHandler
-from utils.handlers.checkbox_handler import CheckBoxHandler
-from utils.handlers.name_handler import NameHandler
+from springleaf.generator import Generator
+from springleaf.utils.file_handler import FileHandler
+from springleaf.utils.handlers.checkbox_handler import CheckBoxHandler
+from springleaf.utils.handlers.name_handler import NameHandler
 # Handlers
-from utils.handlers.project_structure_handler import ProjectStructureHandler
-from utils.prompt_builder import PromptBuilder
+from springleaf.utils.handlers.project_structure_handler import \
+    ProjectStructureHandler
+
+from .utils.prompt_builder import PromptBuilder
 
 
 """
@@ -54,8 +56,11 @@ class CLI:
 
     def ask_for_project_structure(self):
         heading = Figlet(font="slant")
-        self.console.print(heading.renderText(
-            "SpringLeaf CLI"), style="green bold")
+        self.heading(heading.renderText(
+            "SpringLeaf CLI"))
+
+        self.version()
+
         prompt = PromptBuilder().create_question().set_type("list").set_message("Which project structure to use?").set_name("structure").set_choices(
             self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]).set_handler(
                 ProjectStructureHandler)
@@ -92,3 +97,10 @@ class CLI:
 
     def get_project_structures(self):
         return FileHandler.get_project_structures()
+
+    def heading(self, text):
+        self.console.print(text, style="green bold")
+
+    def version(self):
+        self.console.print("\nCLI Version: " +
+                           FileHandler.version() + "\n", style="yellow")

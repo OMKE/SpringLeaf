@@ -2,7 +2,7 @@
 
 
 
-from utils.java_parser import JavaParser
+from springleaf.utils.java_parser import JavaParser
 
 
 class Generator:

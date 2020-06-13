@@ -3,8 +3,7 @@ from __future__ import print_function, unicode_literals
 
 from PyInquirer import (Separator, Token, ValidationError, Validator, prompt,
                         style_from_dict)
-
-from .exceptions import QuestionNotCreatedException
+from springleaf.utils.exceptions import QuestionNotCreatedException
 
 
 class NameValidator(Validator):
@@ -35,6 +34,10 @@ class PromptBuilder:
             return self.questions[-1]
         except IndexError:
             raise QuestionNotCreatedException
+
+    def set_heading(self, message):
+        print(message)
+        return self
 
     def set_type(self, type):
         self.get_question()["type"] = type

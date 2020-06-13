@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Standard",
+    "structure": {
+      "entity": "domain.model",
+      "repository": "domain.repository",
+      "service": "service",
+      "exception": "service.exception",
+      "dto": "dto.model",
+      "response": "dto.response",
+      "mapper": "mapper",
+      "controller": "api.v1.controller",
+      "request": "api.v1.request"
+    }
+  },
+  {
+    "name": "Basic",
+    "structure": {
+      "entity": "model",
+      "repository": "repository",
+      "service": "service",
+      "dto": "dto",
+      "controller": "controller"
+    }
+  }
+]
