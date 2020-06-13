@@ -1,8 +1,21 @@
 # Spring Leaf
 
-## Spring Boot Command Line Interface for code generation
+[![version](https://img.shields.io/pypi/v/springleaf.svg)](https://pypi.org/project/springleaf/)
+[![license](https://img.shields.io/pypi/l/springleaf.svg)](https://pypi.org/project/springleaf/)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/springleaf.svg)](https://pypi.python.org/pypi/springleaf)
+
+Easy to use Spring Boot CLI
+
+## Quickstart
+
+To install `springleaf`, use pip: <br>
+`$ pip install springleaf`
 
 ## Usage
+
+- @TODO (custom folder structures, params help)
+
+## Description
 
 - @TODO
 
@@ -14,7 +27,7 @@
         <li>Moved from PyInquirer(not in development) to <a href="https://github.com/tmbo/questionary/">questionary</a> , error was still appearing in CommandPrompt</li>
         <li>Founded out that everything works in Cmder when started in bash </li>
         <li>Should be tested more on Windows</li>
-        <li>prompt_toolkit version: 3.0.2</li>
+        <li>changed prompt_toolkit version to 3.0.2</li>
         </ul>
 </details>
 <details><summary>Version: 0.1.1</summary>
