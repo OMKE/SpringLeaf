@@ -108,9 +108,7 @@ class FileHandler:
 
     @staticmethod
     def get_project_structures():
-        with open(FileHandler.script_dir() + "common/project_structures.json", 'r') as file:
-            structures = json.load(file)
-            return structures
+        return FileHandler.get_src_file("project_structures.json")
 
     @staticmethod
     def get_project_structure(name):

@@ -1,6 +1,7 @@
 LICENSE
 MANIFEST.in
 setup.py
+.vscode/settings.json
 springleaf/__init__.py
 springleaf/cli.py
 springleaf/generator.py
