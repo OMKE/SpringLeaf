@@ -1,10 +1,10 @@
 import json
 import os
 
-import yaml
 from pkg_resources import resource_stream
 
 import springleaf
+import yaml
 
 
 """
@@ -158,10 +158,6 @@ class FileHandler:
                 return True
 
         return False
-
-    @staticmethod
-    def version():
-        return FileHandler.get_src_file("version.json")["version"]
 
     @staticmethod
     def get_src_file(file_name, as_json=True):

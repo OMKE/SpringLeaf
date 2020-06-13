@@ -9,6 +9,7 @@ from PyInquirer import (Separator, Token, ValidationError, Validator, prompt,
                         style_from_dict)
 from rich.console import Console
 
+import springleaf
 from springleaf.generator import Generator
 from springleaf.utils.file_handler import FileHandler
 from springleaf.utils.handlers.checkbox_handler import CheckBoxHandler
@@ -102,5 +103,4 @@ class CLI:
         self.console.print(text, style="green bold")
 
     def version(self):
-        self.console.print("\nCLI Version: " +
-                           FileHandler.version() + "\n", style="yellow")
+        return '0.1.1'
