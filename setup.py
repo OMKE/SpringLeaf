@@ -2,7 +2,7 @@ import json
 
 import setuptools
 
-with open("springleaf/README.md", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
 with open("springleaf/common/version.json", "r") as file:
