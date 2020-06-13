@@ -5,8 +5,7 @@ import os
 from pprint import pprint
 
 from pyfiglet import Figlet
-from PyInquirer import (Separator, Token, ValidationError, Validator, prompt,
-                        style_from_dict)
+from questionary import Separator
 from rich.console import Console
 
 import springleaf
