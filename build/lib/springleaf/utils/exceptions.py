@@ -1,4 +1,0 @@
-
-
-class QuestionNotCreatedException(Exception):
-    pass
