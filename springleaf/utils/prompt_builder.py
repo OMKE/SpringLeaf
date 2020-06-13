@@ -1,18 +1,12 @@
 
 from __future__ import print_function, unicode_literals
 
-from PyInquirer import (Separator, Token, ValidationError, Validator, prompt,
-                        style_from_dict)
+from questionary import Choice, Separator, prompt
+
 from springleaf.utils.exceptions import QuestionNotCreatedException
 
+# from prompt_toolkit.styles import Style
 
-class NameValidator(Validator):
-    def validate(self, document):
-        if len(document.text) < 3:
-            raise ValidationError(
-                message="Name can not be shorter than 3 chars",
-                cursor_position=len(document.text)
-            )
 
 
 class PromptBuilder:
@@ -20,10 +14,6 @@ class PromptBuilder:
     def __init__(self):
         self.questions = []
         self.handlers = []
-        self.style = style_from_dict({
-            Token.Pointer: "#83E774",
-            Token.QuestionMark: "#ffd738"
-        })
 
     def create_question(self):
         self.questions.append({})
@@ -92,7 +82,7 @@ class PromptBuilder:
     """
 
     def prompt(self, handle=False):
-        self.answers = prompt(self.questions, style=self.style)
+        self.answers = prompt(self.questions)
         if handle:
             self.handle()
         return self

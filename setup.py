@@ -5,13 +5,10 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-with open("springleaf/common/version.json", "r") as file:
-    version = json.load(file)["version"]
-
 
 setuptools.setup(
     name='springleaf',
-    version=version,
+    version="0.1.2",
     author="Omar Iriskic",
     scripts=["springleaf/springleaf"],
     author_email="contact@omaririskic.com",
@@ -24,9 +21,10 @@ setuptools.setup(
     package_data={
         '': ["*.json"]
     },
-    py_modules=["cli", "generator"],
-    install_required=["jinja2", "javalang",
-                      "PyInquirer", "pyyaml", "pyfiglet", "rich"],
+    py_modules=["cli", "generator", "file_handler",
+                "java_parser", "prompt_builder", "exceptions"],
+    install_requires=["jinja2", "javalang",
+                      "questionary", "pyyaml", "pyfiglet", "rich", "prompt_toolkit==3.0.2"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
