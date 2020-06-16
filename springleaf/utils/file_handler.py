@@ -1,10 +1,11 @@
 import json
 import os
+import xml.etree.ElementTree as ET
 
+import yaml
 from pkg_resources import resource_stream
 
 import springleaf
-import yaml
 
 
 """
@@ -165,3 +166,26 @@ class FileHandler:
             return json.loads(resource_stream(springleaf.__name__, "common/" + file_name).read().decode())
         else:
             return resource_stream(springleaf.__name__, "common/" + file_name).read().decode()
+
+    @staticmethod
+    def read_pom_file():
+        tree = ET.parse(FileHandler.current_dir() + "/pom.xml")
+        root = tree.getroot()
+        namesp = root.tag.replace("project", "")
+        group_id = root.find(namesp+"groupId")
+        name = root.find(namesp+"name")
+        return {
+            "groupId": group_id.text,
+            "name": name.text
+        }
+
+    @staticmethod
+    def validate_config_file():
+        config_attributes = ["build", 'name', "package", "structure"]
+        with open(FileHandler.current_dir() + "/springleaf.yaml") as file:
+            config = yaml.load(file, Loader=yaml.FullLoader)
+            for i in config_attributes:
+                if i in config["springleaf"]["project"]:
+                    return True
+                else:
+                    return False

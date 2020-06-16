@@ -10,10 +10,12 @@ class ProjectStructureHandler(Handler):
             self.use_custom_project_structure()
         else:
             structure = FileHandler.get_project_structure(args[0])
-
+            pom_file = FileHandler.read_pom_file()
             FileHandler.create_config_file({
                 "springleaf": {
                     "project": {
+                        "name": pom_file["name"],
+                        "package": pom_file["groupId"],
                         "structure": structure["name"],
                         "build": self.project_type()
                     }

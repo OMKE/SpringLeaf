@@ -29,6 +29,8 @@ CLI
 
 class CLI:
 
+    WARNING = '\033[93m'
+
     def __init__(self):
         self.generator = Generator()
         self.console = Console()
@@ -38,8 +40,11 @@ class CLI:
         # self.generator.generate()
         if(FileHandler.is_spring_dir()):
             if(FileHandler.has_config_file()):
-                # Do validaiton of config file
-                pass
+                if FileHandler.validate_config_file():
+                    # proceed to generate what users wants
+                    pass
+                else:
+                    self.console.print("Invalid config file", style="red bold")
             else:
                 self.ask_for_project_structure()
         else:
@@ -59,7 +64,9 @@ class CLI:
         self.heading(heading.renderText(
             "SpringLeaf CLI"))
 
-        self.version()
+        # print(f"\n{CLI.WARNING} Version: {self.version()}\n")
+        self.console.print(f"\nVersion: {self.version()}", style="magenta")
+        print("")
 
         prompt = PromptBuilder().create_question().set_type("list").set_message("Which project structure to use?").set_name("structure").set_choices(
             self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]).set_handler(
@@ -102,4 +109,5 @@ class CLI:
         self.console.print(text, style="green bold")
 
     def version(self):
-        return '0.1.1'
+        from version import __version__
+        return __version__
