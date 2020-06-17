@@ -11,11 +11,11 @@ from rich.console import Console
 import springleaf
 from springleaf.generator import Generator
 from springleaf.utils.file_handler import FileHandler
-from springleaf.utils.handlers.checkbox_handler import CheckBoxHandler
-from springleaf.utils.handlers.name_handler import NameHandler
 # Handlers
 from springleaf.utils.handlers.project_structure_handler import \
     ProjectStructureHandler
+from springleaf.utils.handlers.spring_initializr_handler import \
+    SpringInitializrHandler
 
 from .utils.prompt_builder import PromptBuilder
 
@@ -44,20 +44,61 @@ class CLI:
         pass
 
     def setup(self):
-        # self.generator.generate()
-        if(FileHandler.is_spring_dir()):
-            if(FileHandler.has_config_file()):
-                if FileHandler.validate_config_file():
-                    # proceed to generate what users wants
-                    pass
+        if self.args["init"]:
+            if(FileHandler.is_spring_dir()):
+                if(FileHandler.has_config_file()):
+                    if FileHandler.validate_config_file():
+                        # proceed to generate what users wants
+                        pass
+                    else:
+                        self.console.print(
+                            "Invalid config file", style="red bold")
                 else:
-                    self.console.print("Invalid config file", style="red bold")
+                    self.ask_for_project_structure()
             else:
-                self.ask_for_project_structure()
-        else:
-            self.console.print("Not a Spring Boot project", style="red bold")
+                self.console.print(
+                    "Not a Spring Boot project", style="red bold")
+                self.console.print(
+                    "Create new project with \n$ springleaf new <name>", style="yellow bold")
+        elif self.args["new"]:
+            self.spring_intializr(self.args["<name>"])
+
+    # Spring Intializr
+
+    def spring_intializr(self, project_name):
+        if " " in project_name:
             self.console.print(
-                "Create new project with \n$ springleaf new <name>", style="yellow bold")
+                "Project name contains spaces", style="red bold")
+            return
+
+        # Display heading
+        heading = Figlet(font="slant")
+        self.heading(heading.renderText(
+            "Spring Initializr"))
+
+        # Init new project
+        new_project = {
+            'name': project_name
+        }
+        # Read spring_initializr.json and get values
+        spring_intializr_file = FileHandler.get_src_file(
+            "spring_initializr.json")
+
+        # New line
+        print("")
+        # Init prompt
+        prompt = PromptBuilder().create_question().set_type("select").set_message(
+            "Project").set_name("project").set_choices(spring_intializr_file["project"]).create_question().set_type("select").set_message(
+            "Spring Boot").set_name("version").set_choices(spring_intializr_file["spring-boot-versions"]).create_question().set_type(
+                "text").set_name("description").set_message("Project metadata - Description: ").create_question().set_type(
+                    "select").set_message("Packaging").set_name("packaging").set_choices(spring_intializr_file["packaging"]).create_question().set_name(
+                        "java_version").set_type(
+                    "select").set_message("Java").set_choices(spring_intializr_file["java-version"]).create_question().set_type("checkbox").set_name(
+            "dependencies").set_message("Select dependencies").set_choices(self.get_dependencies(spring_intializr_file))
+
+        prompt.set_handler(SpringInitializrHandler, options=new_project)
+        # Ask and handle
+        prompt.prompt(handle_all=True)
 
     """
     ask_for_project_structure
@@ -74,6 +115,9 @@ class CLI:
         # print(f"\n{CLI.WARNING} Version: {self.version()}\n")
         self.console.print(f"\nVersion: {self.version()}", style="magenta")
         print("")
+        if self.args["new"]:
+            self.console.print(
+                "Spring Boot project found, ignoring new command", style="yellow")
 
         prompt = PromptBuilder().create_question().set_type("list").set_message("Which project structure to use?").set_name("structure").set_choices(
             self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]).set_handler(
