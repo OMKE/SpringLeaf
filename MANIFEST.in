@@ -3,3 +3,5 @@ include README.md
 global-include *.json
 global-include *.j2
 global-include *.zip
+recursive-include docs *.gif
+recursive-include docs *.png

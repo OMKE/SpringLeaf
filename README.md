@@ -4,7 +4,7 @@
 [![license](https://img.shields.io/pypi/l/springleaf.svg)](https://pypi.org/project/springleaf/)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/springleaf.svg)](https://pypi.python.org/pypi/springleaf)
 
-Easy to use Spring Boot CLI
+🍃 Easy to use Spring Boot CLI 🍃
 
 ## Quickstart
 
@@ -12,6 +12,10 @@ To install `springleaf`, use pip: <br>
 `$ pip install springleaf`
 
 ## Usage
+
+### SpringInitializr
+
+![spring-initializr-example-gif](docs/images/spring_initializr.gif)
 
 - @TODO (custom folder structures, params help)
 
