@@ -1,3 +1,5 @@
 include LICENSE
 include README.md
 global-include *.json
+global-include *.j2
+global-include *.zip
