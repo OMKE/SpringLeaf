@@ -30,7 +30,7 @@ setuptools.setup(
     py_modules=["cli", "generator", "file_handler",
                 "java_parser", "prompt_builder", "exceptions"],
     install_requires=["jinja2", "javalang",
-                      "questionary", "pyyaml", "pyfiglet", "rich", "prompt_toolkit==3.0.2"],
+                      "questionary", "pyyaml", "pyfiglet", "rich", "prompt_toolkit==3.0.2", "jinja2"],
     keywords="spring boot cli code generator",
     project_urls={
         "Bug Reports": "https://github.com/OMKE/SpringLeaf/issues",
