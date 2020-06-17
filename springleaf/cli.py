@@ -31,10 +31,17 @@ class CLI:
 
     WARNING = '\033[93m'
 
-    def __init__(self):
-        self.generator = Generator()
+    def __init__(self, args):
         self.console = Console()
+        self.args = args
         self.setup()
+
+    def add_args(self):
+        # self.arg_parser.add_argument(
+        #     'new', 'n', type=str, help="Initialize a new Spring Starter Project")
+
+        # return self.arg_parser.parse_args()
+        pass
 
     def setup(self):
         # self.generator.generate()
