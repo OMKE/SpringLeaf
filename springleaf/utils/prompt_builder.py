@@ -1,7 +1,8 @@
 
 from __future__ import print_function, unicode_literals
 
-from questionary import Choice, Separator, prompt
+from prompt_toolkit.styles import Style
+from questionary import Choice, Separator, ValidationError, Validator, prompt
 
 from springleaf.utils.exceptions import QuestionNotCreatedException
 
@@ -83,7 +84,9 @@ class PromptBuilder:
 
     def validator(self, name):
         validators = {
-            "NameValidator": NameValidator
+            "NameValidatorLessThan3": NameValidatorLessThan3,
+            "NameValidatorEmpty": NameValidatorEmpty,
+            "GroupNameValidator": GroupNameValidator
         }
         return validators[name]
 
@@ -93,14 +96,14 @@ class PromptBuilder:
 
         return self
 
-    def set_default(self, bool=False):
+    def set_default(self, index):
 
-        self.get_question()["default"] = bool
+        self.get_question()["default"] = index
 
         return self
 
-    def set_handler(self, handler):
-        self.handlers.append(handler())
+    def set_handler(self, handler, options=None):
+        self.handlers.append(handler(options))
         return self
 
     """
@@ -110,10 +113,12 @@ class PromptBuilder:
     @return: PromptBuilder - self
     """
 
-    def prompt(self, handle=False):
-        self.answers = prompt(self.questions)
+    def prompt(self, handle=False, handle_all=False):
+        self.answers = prompt(self.questions, style=style)
         if handle:
             self.handle()
+        elif handle_all:
+            self.handle_many()
         return self
 
     """
@@ -127,4 +132,10 @@ class PromptBuilder:
         for handler in self.handlers:
             for _ in self.answers:
                 handler.handle(dict(self.answers).get(handler.name()))
+                break
+
+    def handle_many(self):
+        for handler in self.handlers:
+            for _ in self.answers:
+                handler.handle(self.answers)
                 break
