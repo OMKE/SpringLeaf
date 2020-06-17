@@ -4,12 +4,24 @@
 [![license](https://img.shields.io/pypi/l/springleaf.svg)](https://pypi.org/project/springleaf/)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/springleaf.svg)](https://pypi.python.org/pypi/springleaf)
 
-🍃 Easy to use Spring Boot CLI 🍃
+🍃 Easy to use Spring Boot CLI 🍃 <br>
+
+SpringLeaf CLI creates, manages, builds and test your SpringBoot Applications
 
 ## Quickstart
 
 To install `springleaf`, use pip: <br>
 `$ pip install springleaf`
+
+## Description
+
+SpringLeaf is All In One CLI for your Spring Boot Applications <br>
+Some of the features are:
+
+<ul>
+    <li>Generating DTOs, Repositories, Services, Request and Response classes out of Entity model</li>
+    <li>Initializing new Spring Boot project with SpringInitializr - Maven, Gradle (not yet supported)</li>
+</ul>
 
 ## Usage
 
@@ -19,16 +31,13 @@ To install `springleaf`, use pip: <br>
 
 - @TODO (custom folder structures, params help)
 
-## Description
-
-- @TODO
-
 ## Changelog
 
 <details><summary>Version: 0.2</summary>
     Feature release: <br>
         <ul>
             <li>Added SpringInitializr</li>
+            <li>Maven is only supported for now, Gradle support will come in future relases</li>
         </ul>
 
 </details>
@@ -49,6 +58,17 @@ To install `springleaf`, use pip: <br>
         </ul>
 
 </details>
+
+## Packages
+
+| Package     | Link                                                                    | Description                                                                      |
+| :---------- | :---------------------------------------------------------------------- | :------------------------------------------------------------------------------- |
+| questionary | <a href="https://github.com/tmbo/questionary">@tmbo/questionary</a>     | An easy to use python library to build pretty command line user prompts          |
+| jinja2      | <a href="https://github.com/noirbizarre/jinja2">@noirbizarre/jinja2</a> | Jinja2 is a template engine written in pure Python.                              |
+| javalang    | <a href="https://github.com/c2nes/javalang">@c2nes/javalang</a>         | javalang is a pure Python library for working with Java source code              |
+| rich        | <a href="https://github.com/willmcgugan/rich">@willmcgugan/rich</a>     | Rich is a Python library for rich text and beautiful formatting in the terminal. |
+| pyfiglet    | <a href="https://github.com/pwaller/pyfiglet">@pwaller/pyfiglet</a>     | An implementation of figlet written in Python                                    |
+| pyyaml      | <a href="https://github.com/yaml/pyyaml">@yaml/pyyaml</a>               | YAML parser and emitter for Python                                               |
 
 ## License
 
