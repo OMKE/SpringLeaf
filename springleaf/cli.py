@@ -118,3 +118,12 @@ class CLI:
     def version(self):
         from version import __version__
         return __version__
+
+    def get_dependencies(self, spring_intializr_file):
+        dependencies = []
+        for i in spring_intializr_file["dependencies"]["groups"]:
+            dependencies.append(Separator(f"▪︎ {i['name']}"))
+            for j in i["values"]:
+                dependencies.append(j["name"])
+
+        return dependencies
