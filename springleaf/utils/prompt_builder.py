@@ -8,6 +8,35 @@ from springleaf.utils.exceptions import QuestionNotCreatedException
 # from prompt_toolkit.styles import Style
 
 
+class NameValidatorLessThan3(Validator):
+    def validate(self, document):
+        if len(document.text) < 3:
+            raise ValidationError(
+                message="Name can not be shorter than 3 chars",
+                cursor_position=len(document.text)
+            )
+
+
+class NameValidatorEmpty(Validator):
+    def validate(self, document):
+        if len(document.text) == 0:
+            raise ValidationError(
+                message="Field cannot be empty",
+                cursor_position=len(document.text)
+            )
+
+
+class GroupNameValidator(Validator):
+    def validate(self, document):
+        if " " in document.text:
+            raise ValidationError(
+                message="Group name cannot contain spaces", cursor_position=len(document.text))
+
+
+style = Style([
+    ('separator', 'fg:#fcba03')
+])
+
 
 class PromptBuilder:
 
