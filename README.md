@@ -25,6 +25,13 @@ To install `springleaf`, use pip: <br>
 
 ## Changelog
 
+<details><summary>Version: 0.2</summary>
+    Feature release: <br>
+        <ul>
+            <li>Added SpringInitializr</li>
+        </ul>
+
+</details>
 <details><summary>Version: 0.1.2</summary>
     Windows: <br>
         <ul>
