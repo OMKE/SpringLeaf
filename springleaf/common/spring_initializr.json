@@ -1,12 +1,6 @@
 {
-  "project": ["Maven Project", "Gradle Project"],
-  "spring-boot-versions": [
-    "2.4 (SNAPSHOT)",
-    "2.3.1",
-    "2.3.1 (SNAPSHOT)",
-    "2.2.9 (SNAPSHOT)",
-    "2.2.8"
-  ],
+  "project": ["Maven Project", "Gradle Project (Not supported yet)"],
+  "spring-boot-versions": ["2.3.1", "2.2.8", "2.1.15"],
   "packaging": ["Jar", "War"],
   "java-version": ["14", "11", "8"],
   "dependencies": {
