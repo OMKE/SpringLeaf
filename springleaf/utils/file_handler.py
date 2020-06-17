@@ -1,9 +1,10 @@
 import json
 import os
 import xml.etree.ElementTree as ET
+from zipfile import ZipFile
 
 import yaml
-from pkg_resources import resource_stream
+from pkg_resources import resource_filename, resource_stream
 
 import springleaf
 
@@ -35,6 +36,21 @@ class FileHandler:
                 if absolute:
                     return os.path.join(root, file)
                 return file
+
+    """
+    exits
+    @desc:
+        Check if file or folder exists on given path
+    @return: bool - true if exists, else false
+    """
+
+    @staticmethod
+    def exists(path):
+        if os.path.isdir(path):
+            return True
+        if os.path.exists(path):
+            return True
+        return False
 
     """
     get_first_file_in_tree
@@ -168,6 +184,18 @@ class FileHandler:
             return resource_stream(springleaf.__name__, "common/" + file_name).read().decode()
 
     @staticmethod
+    def get_template_file(file_name):
+        return resource_stream(springleaf.__name__, "common/templates/" + file_name).read().decode()
+
+    # @TODO - read gradle file
+    """
+    read_pom_file
+    @desc:
+        Reads pom file
+    @return: dict - dict type
+    """
+
+    @staticmethod
     def read_pom_file():
         tree = ET.parse(FileHandler.current_dir() + "/pom.xml")
         root = tree.getroot()
@@ -179,6 +207,14 @@ class FileHandler:
             "name": name.text
         }
 
+    """
+    validate_config_file
+    @desc:
+        Validates config file based on keys,
+        @TODO - make a initial file in common, create and validate based on that file
+    @return: bool - returns true if there are keys that we want, else false
+    """
+
     @staticmethod
     def validate_config_file():
         config_attributes = ["build", 'name', "package", "structure"]
@@ -189,3 +225,14 @@ class FileHandler:
                     return True
                 else:
                     return False
+
+    @staticmethod
+    def create_folder_structure(path):
+        os.makedirs(path, exist_ok=True)
+
+    @staticmethod
+    def unzip_file(extract_dir, file_name):
+        file_path = resource_filename(
+            springleaf.__name__, f"common/spring-build/{file_name}")
+        with ZipFile(file_path, "r") as zip_ref:
+            zip_ref.extractall(extract_dir)
