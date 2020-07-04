@@ -4,6 +4,8 @@ from pprint import pprint
 from javalang.parse import parse
 from springleaf.utils.file_handler import FileHandler
 
+from .exceptions import ModelWithoutAttributesException
+
 
 class JavaParser:
 
@@ -43,15 +45,23 @@ class JavaParser:
                     attribute["name"] = k["name"]
                     attribute['sub_types'] = []
                     # Field is None if type is not collection
-                    if j["type"]['arguments'] == None:
-                        attribute["type"] = j["type"]["name"]
-                    else:
+                    try:
+                        """
+                        #TODO
+                        @desc:
+                            Key error in j['type']['arguments'], see parsed document and resolve errors
+                        """
+                        if j["type"]['arguments'] == None:
+                            attribute["type"] = j["type"]["name"]
+                        else:
+                            attribute['type'] = j['type']['name']
+                            for l in j['type']['arguments']:
+                                attribute['sub_types'].append(
+                                    l['type']['name'])
 
-                        attribute['type'] = j['type']['name']
-                        for l in j['type']['arguments']:
-                            attribute['sub_types'].append(l['type']['name'])
-
-                    attributes.append(attribute)
+                        attributes.append(attribute)
+                    except KeyError:
+                        raise ModelWithoutAttributesException
         return attributes
 
     @staticmethod
