@@ -37,13 +37,6 @@ class CLI:
         self.args = args
         self.setup()
 
-    def add_args(self):
-        # self.arg_parser.add_argument(
-        #     'new', 'n', type=str, help="Initialize a new Spring Starter Project")
-
-        # return self.arg_parser.parse_args()
-        pass
-
     def setup(self):
         if self.args["init"]:
             if(FileHandler.is_spring_dir()):
@@ -64,10 +57,14 @@ class CLI:
         elif self.args["new"]:
             self.spring_intializr(self.args["<name>"])
         elif self.args["generate"]:
-            if FileHandler.validate_config_file():
-                self.ask_for_model()
+            if FileHandler.has_config_file():
+                if FileHandler.validate_config_file():
+                    self.ask_for_model()
+                else:
+                    self.console.print("Invalid config file", style="red bold")
             else:
-                self.console.print("Invalid config file", style="red bold")
+                self.console.print(
+                    "Config file is not present. Initialize SpringLeaf with: springleaf init", style="red bold")
 
     # Spring Intializr
 
