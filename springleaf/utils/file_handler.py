@@ -149,11 +149,24 @@ class FileHandler:
     def get_project_structures():
         return FileHandler.get_src_file("project_structures.json")
 
+    """
+    get_project_structure
+    @desc:
+        Looks in project_structures.json file and returns a value with given key
+    @return: str - value of the key
+    """
+
     @staticmethod
     def get_project_structure(name):
         for i in FileHandler.get_project_structures():
             if i["name"] == name:
                 return i
+
+    @staticmethod
+    def get_project_structure_content(name):
+        for i in FileHandler.get_project_structures():
+            if i["name"] == name:
+                return i["structure"]
 
     @staticmethod
     def is_spring_dir():
