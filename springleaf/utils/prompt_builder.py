@@ -3,7 +3,6 @@ from __future__ import print_function, unicode_literals
 
 from prompt_toolkit.styles import Style
 from questionary import Choice, Separator, ValidationError, Validator, prompt
-
 from springleaf.utils.exceptions import QuestionNotCreatedException
 
 # from prompt_toolkit.styles import Style
@@ -131,8 +130,7 @@ class PromptBuilder:
     def handle(self):
         for handler in self.handlers:
             for _ in self.answers:
-                handler.handle(dict(self.answers).get(handler.name()))
-                break
+                return handler.handle(dict(self.answers).get(handler.name()))
 
     def handle_many(self):
         for handler in self.handlers:
