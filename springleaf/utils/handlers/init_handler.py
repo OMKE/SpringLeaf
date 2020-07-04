@@ -1,15 +1,15 @@
-
 from ..file_handler import FileHandler
 from .handler import Handler
 
 
-class ProjectStructureHandler(Handler):
+class InitHandler(Handler):
 
     def handle(self, *args):
-        if args[0] == "Custom":
+
+        if args[0]["structure"] == "Custom":
             self.use_custom_project_structure()
         else:
-            structure = FileHandler.get_project_structure(args[0])
+            structure = FileHandler.get_project_structure(args[0]["structure"])
             pom_file = FileHandler.read_pom_file()
             FileHandler.create_config_file({
                 "springleaf": {
@@ -17,6 +17,8 @@ class ProjectStructureHandler(Handler):
                         "name": pom_file["name"],
                         "package": pom_file["groupId"],
                         "structure": structure["name"],
+                        "methods": args[0]["methods"],
+                        "entities-folder": args[0]["entities"],
                         "build": self.project_type()
                     }
                 }
