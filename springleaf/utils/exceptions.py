@@ -26,3 +26,7 @@ class GeneratorFileExistsException(Exception):
 
 class InvalidConfigFileException(Exception):
     pass
+
+
+class ModelWithoutAttributesException(Exception):
+    pass
