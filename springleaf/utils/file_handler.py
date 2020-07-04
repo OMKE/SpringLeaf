@@ -3,10 +3,11 @@ import os
 import xml.etree.ElementTree as ET
 from zipfile import ZipFile
 
-import yaml
 from pkg_resources import resource_filename, resource_stream
 
 import springleaf
+import yaml
+from springleaf.utils.exceptions import InvalidConfigFileException
 
 
 """
@@ -117,6 +118,27 @@ class FileHandler:
             return False
 
     """
+    get_model_name
+    @desc:
+        Looks for models in model folder and returns a list of founded
+    @return: list - list of founded models
+    """
+
+    @staticmethod
+    def get_model_names():
+        # package name replaced dots with slashes so we get path like string
+        package = FileHandler.get_from_config_file('package').replace(".", "/")
+        model_folder_name = FileHandler.get_from_config_file(
+            'entities-folder').replace(".", "/")  # folder that stores entities
+        entities_path = "src/main/java/" + package + "/" + model_folder_name + "/"
+
+        try:
+            found_files = os.listdir(entities_path)
+            return [file[:-5] for file in found_files if file[-5:] == ".java"]
+        except:
+            raise InvalidConfigFileException()
+
+    """
     get_project_structures
     @desc:
         Reads predefined project structures from ./common/project_structures.json
@@ -207,6 +229,12 @@ class FileHandler:
             "name": name.text
         }
 
+    @staticmethod
+    def get_from_config_file(key):
+        with open(FileHandler.current_dir() + "/springleaf.yaml") as file:
+            config = yaml.load(file, Loader=yaml.FullLoader)
+            return config['springleaf']['project'][key]
+
     """
     validate_config_file
     @desc:
@@ -217,14 +245,15 @@ class FileHandler:
 
     @staticmethod
     def validate_config_file():
-        config_attributes = ["build", 'name', "package", "structure"]
+        is_valid = True
+        config_attributes = ["build", 'name', 'package',
+                             'structure', 'entities-folder', 'methods']
         with open(FileHandler.current_dir() + "/springleaf.yaml") as file:
             config = yaml.load(file, Loader=yaml.FullLoader)
             for i in config_attributes:
-                if i in config["springleaf"]["project"]:
-                    return True
-                else:
-                    return False
+                if i not in config["springleaf"]["project"] or config['springleaf']['project'][i] == None:
+                    is_valid = False
+        return is_valid
 
     @staticmethod
     def create_folder_structure(path):
