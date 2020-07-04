@@ -5,6 +5,7 @@
 
 Usage:
   springleaf init
+  springleaf generate
   springleaf new <name>
   springleaf (-h | --help)
 
@@ -15,7 +16,6 @@ Options:
 
 
 from docopt import docopt
-
 from springleaf.cli import CLI
 
 """
