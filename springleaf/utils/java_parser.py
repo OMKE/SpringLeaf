@@ -49,7 +49,7 @@ class JavaParser:
                         """
                         #TODO
                         @desc:
-                            Key error in j['type']['arguments'], see parsed document and resolve errors
+                            Key error in j['type']['arguments'], see parsed document and resolve errors, error happens when parsing BaseEntity class
                         """
                         if j["type"]['arguments'] == None:
                             attribute["type"] = j["type"]["name"]
