@@ -22,3 +22,7 @@ class GeneratorFileNameNotFoundException(Exception):
 
 class GeneratorFileExistsException(Exception):
     pass
+
+
+class InvalidConfigFileException(Exception):
+    pass
