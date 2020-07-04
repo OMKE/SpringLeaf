@@ -52,7 +52,7 @@ class JavaParser:
                             attribute['sub_types'].append(l['type']['name'])
 
                     attributes.append(attribute)
-        pprint(attributes)
+        return attributes
 
     @staticmethod
     def json_ast_encoder(o):
