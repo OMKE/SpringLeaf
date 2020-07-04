@@ -4,19 +4,20 @@ from __future__ import print_function, unicode_literals
 import os
 from pprint import pprint
 
+import springleaf
 from pyfiglet import Figlet
 from questionary import Separator
 from rich.console import Console
-
-import springleaf
 from springleaf.generator import Generator
+from springleaf.utils.exceptions import InvalidConfigFileException
 from springleaf.utils.file_handler import FileHandler
 # Handlers
-from springleaf.utils.handlers.project_structure_handler import \
-    ProjectStructureHandler
+from springleaf.utils.handlers.init_handler import InitHandler
+from springleaf.utils.handlers.model_handler import ModelHandler
 from springleaf.utils.handlers.spring_initializr_handler import \
     SpringInitializrHandler
 
+from .utils.java_parser import JavaParser
 from .utils.prompt_builder import PromptBuilder
 
 
@@ -48,13 +49,13 @@ class CLI:
             if(FileHandler.is_spring_dir()):
                 if(FileHandler.has_config_file()):
                     if FileHandler.validate_config_file():
-                        # proceed to generate what users wants
-                        pass
+                        self.console.print(
+                            "Project is already initialized with SpringLeaf", style="green bold")
                     else:
                         self.console.print(
                             "Invalid config file", style="red bold")
                 else:
-                    self.ask_for_project_structure()
+                    self.init_config()
             else:
                 self.console.print(
                     "Not a Spring Boot project", style="red bold")
@@ -62,6 +63,11 @@ class CLI:
                     "Create new project with \n$ springleaf new <name>", style="yellow bold")
         elif self.args["new"]:
             self.spring_intializr(self.args["<name>"])
+        elif self.args["generate"]:
+            if FileHandler.validate_config_file():
+                self.ask_for_model()
+            else:
+                self.console.print("Invalid config file", style="red bold")
 
     # Spring Intializr
 
@@ -107,7 +113,7 @@ class CLI:
     @return: void - 
     """
 
-    def ask_for_project_structure(self):
+    def init_config(self):
         heading = Figlet(font="slant")
         self.heading(heading.renderText(
             "SpringLeaf CLI"))
@@ -119,17 +125,45 @@ class CLI:
             self.console.print(
                 "Spring Boot project found, ignoring new command", style="yellow")
 
-        prompt = PromptBuilder().create_question().set_type("list").set_message("Which project structure to use?").set_name("structure").set_choices(
-            self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]).set_handler(
-                ProjectStructureHandler)
+        # Reading root package name so user doesn't have to write full package name
+        package_name = FileHandler.read_pom_file()["groupId"]
 
-        prompt.prompt(handle=True)
+        prompt = PromptBuilder().create_question().set_type("select").set_message("Which project structure to use?").set_name("structure").set_choices(
+            self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]) \
+            .create_question().set_type("select").set_message("Constructor, getters and setters").set_name("methods").set_choices(["Standard", "Lombok"]) \
+            .create_question().set_type("text").set_message(f"Package name of entity models: {package_name}.").set_name("entities").set_validator("NameValidatorEmpty")
 
-    def config_file_options(self, options: dict):
+        prompt.set_handler(InitHandler)
 
-        return {
-            "project_structure": options["project_structure"]
-        }
+        prompt.prompt(handle_all=True)
+
+    def ask_for_model(self):
+        try:
+            models = FileHandler.get_model_names()
+            prompt = PromptBuilder().create_question().set_type("select") \
+                .set_message("Select entity model from which you want to generate files").set_name("model").set_choices(models) \
+                .set_handler(ModelHandler)
+            selected_file = prompt.prompt(handle=True).answers['model']
+            # Parse selected file and show model attributes
+            # Instantiate JavaParser
+            java_parser = JavaParser()
+            parsed_attrs = java_parser.parse(selected_file + ".java")
+            # Ask for entity attributes which user wants to generate from
+            prompt = PromptBuilder().create_question().set_type("checkbox").set_message("Select entity attributes which you want to generate from").set_name("attributes") \
+                .set_choices([attr['type'] + ' ' + attr['name'] for attr in parsed_attrs]).set_handler(ModelHandler)
+            attributes_answer = prompt.prompt(
+                handle=True).answers['attributes']
+
+            if FileHandler.get_from_config_file('structure') == "Standard":
+                print("generating for standard")
+            elif FileHandler.get_from_config_file('structure') == "Basic":
+                print("generating for basic")
+            elif FileHandler.get_from_config_file('structure') == "Custom":
+                print("generating for custom")
+
+        except InvalidConfigFileException:
+            self.console.print(
+                "Entity model folder was set but it doesn't exist in path", style="red bold")
 
     """
     get_project_structure_names
