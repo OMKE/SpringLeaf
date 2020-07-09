@@ -213,8 +213,15 @@ class CLI:
 
     def ask_for_files(self, name):
 
-        choices = [key.capitalize()
-                   for key in FileHandler.get_project_structure_content(name).keys()]
+        choices = []
+
+        for key in FileHandler.get_project_structure_content(name).keys():
+            if key != "entity":
+                if key == "dto":
+                    key = key.upper()
+                else:
+                    key = key.capitalize()
+                choices.append(key)
 
         prompt = PromptBuilder().create_question().set_type("checkbox").set_name("files").set_message("Select which files you want to generate") \
             .set_choices(choices).set_handler(ModelHandler)
