@@ -10,12 +10,16 @@ Usage:
   springleaf (-h | --help)
 
 Options:
-  -h --help     Show this screen.
+  -h --help     Shows help
+  init          Inits a new SpringLeaf CLI
+  generate      Starts a generator CLI
+  new <name>    Creates a new SpringBoot Project with given name
 
 """
 
 
 from docopt import docopt
+
 from springleaf.cli import CLI
 
 """
