@@ -1,62 +1,39 @@
-
-import jinja2
-
-from springleaf.utils.exceptions import (GeneratorFileExistsException,
-                                         GeneratorFileNameNotFoundException,
-                                         GeneratorPathNotFoundException,
-                                         TemplateDataNotFoundException,
-                                         TemplateNotFoundException)
 from springleaf.utils.file_handler import FileHandler
-from springleaf.utils.java_parser import JavaParser
+from springleaf.utils.template_util import TemplateUtil
+
+from .base_generator import BaseGenerator
 
 
-class Generator:
-    def __init__(self):
-        self.java_parser = JavaParser()
-        self.output = None
+class Generator(BaseGenerator):
 
-    def generate(self):
-        if FileHandler.exists(self.path + "/" + self.name):
-            raise GeneratorFileExistsException
-        if self.path is None:
-            raise GeneratorPathNotFoundException
-        if self.name is None:
-            raise GeneratorFileNameNotFoundException
+    def __init__(self, selected_file, files_to_create, attributes, structure):
+        super().__init__()
+        self.file = selected_file
+        self.files = files_to_create
+        self.attributes = attributes
+        self.structure = structure
+        self.prepare_templates_data()
 
-        with open(self.path + self.name, "w") as file:
-            file.write(self.output)
     """
-    #TODO
+    prepare_templates_data
     @desc:
-        Selects a directory structure
+        Instantiates TemplateUtils with corresponding data
+    @return: list - List of TemplateUtil objects
     """
 
-    def select_directory_structure(self):
-        pass
+    def prepare_templates_data(self):
+        # getting root_package so we can append corespondig sub-package of the file which we have in project_structures.json
+        root_package = FileHandler.get_from_config_file('package')
+        # Getting type of methods so we can easiy check in the template if it's Standard getters and setters or Lombok
+        methods = FileHandler.get_from_config_file('methods')
+        # Getting structure content
+        structure_content = FileHandler.get_project_structure_content(
+            self.structure)
 
-    def set_template(self, name):
-        self.template = jinja2.Template(
-            FileHandler.get_template_file(name))
-        return self
-
-    def set_data(self, data):
-        self.data = data
-        return self
-
-    def render(self):
-        if self.data is None:
-            raise TemplateDataNotFoundException
-        if self.template is None:
-            raise TemplateNotFoundException
-
-        self.output = self.template.render(data=self.data)
-
-        return self
-
-    def set_path(self, path):
-        self.path = path
-        return self
-
-    def set_name(self, name):
-        self.name = name
-        return self
+        template_utils = []
+        for i in range(len(self.files)):
+            template_utils.append(TemplateUtil(self.file + self.files[i],
+                                               self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()]))
+        for i in template_utils:
+            print(i.name + " " + i.package)
+        return template_utils
