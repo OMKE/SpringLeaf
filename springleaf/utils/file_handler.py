@@ -71,6 +71,15 @@ class FileHandler:
                 break
         return first_file
 
+    """
+    read_file
+    @desc:
+        Reads file from given path
+    @params:
+        path - path to the file, 
+    @return: str - content of the file
+    """
+
     @staticmethod
     def read_file(path):
         try:
@@ -162,11 +171,27 @@ class FileHandler:
             if i["name"] == name:
                 return i
 
+    """
+    get_project_structure_content
+    @desc:
+        Getter for project strucutre content
+    @params:
+        name - name of the project structure from we need content, 
+    @return: dict - returns dict of project structure content like repositories, controllers, services...
+    """
+
     @staticmethod
     def get_project_structure_content(name):
         for i in FileHandler.get_project_structures():
             if i["name"] == name:
                 return i["structure"]
+
+    """
+    is_spring_dir
+    @desc:
+        Checks if current directory is spring boot project
+    @return: boolean - True if it's spring boot project, else False
+    """
 
     @staticmethod
     def is_spring_dir():
@@ -176,6 +201,15 @@ class FileHandler:
             return True
 
         return False
+
+    """
+    is_executable
+    @desc:
+        Checks for maven or gradle meta file type so we are sure that it's spring boot project
+    @params:
+        path - path to the file, 
+    @return: boolean - true if it's executable file type, else false
+    """
 
     @staticmethod
     def is_executable(path):
@@ -188,6 +222,15 @@ class FileHandler:
 
         return False
 
+    """
+    is_maven
+    @desc:
+        Checks if project is maven based on mvnw file
+    @params:
+        path - optional - path to the file, 
+    @return: boolean - true if it's maven project
+    """
+
     @staticmethod
     def is_maven(path=None):
         if path is None:
@@ -198,6 +241,15 @@ class FileHandler:
             if file[0:9] == maven_meta:
                 return True
         return False
+
+    """
+    is_gradle
+    @desc:
+        Checks if project is gradle based on gradlew file
+    @params:
+        path - optional - path to the file, 
+    @return: boolean - true if it's gradle project
+    """
 
     @staticmethod
     def is_gradle(path=None):
@@ -211,12 +263,31 @@ class FileHandler:
 
         return False
 
+    """
+    get_src_file
+    @desc:
+        Helper method which returns file from springleaf source 
+    @params:
+        file_name - file to return from folder common
+        as_json - optional - default true if we want to return file as json
+    @return: json or file - if as_json is passed it will try to load json file, else normal
+    """
+
     @staticmethod
     def get_src_file(file_name, as_json=True):
         if as_json:
             return json.loads(resource_stream(springleaf.__name__, "common/" + file_name).read().decode())
         else:
             return resource_stream(springleaf.__name__, "common/" + file_name).read().decode()
+
+    """
+    get_template_file
+    @desc:
+        Reads and returns template file from common/templates
+    @params:
+        file_name - Name of the template, 
+    @return: j2 file - returns a jinja2 file which we can parse as template
+    """
 
     @staticmethod
     def get_template_file(file_name):
@@ -268,9 +339,28 @@ class FileHandler:
                     is_valid = False
         return is_valid
 
+    """
+    create_folder_strucutre
+    @desc:
+        Creates a folder structure based on given path
+    @params:
+        path - folders to create, 
+    @return: void - 
+    """
+
     @staticmethod
     def create_folder_structure(path):
         os.makedirs(path, exist_ok=True)
+
+    """
+    unzip_file
+    @desc:
+        Unzips compressed file, because we're holding spring files in zip (faster to download rather uncompressed)
+    @params:
+        extract_dir - extraction directory, 
+        file_name - name of the file that needs to be extracted
+    @return: void - 
+    """
 
     @staticmethod
     def unzip_file(extract_dir, file_name):
