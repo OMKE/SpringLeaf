@@ -19,7 +19,8 @@ class InitHandler(Handler):
                         "structure": structure["name"],
                         "methods": args[0]["methods"],
                         "entities-folder": args[0]["entities"],
-                        "build": self.project_type()
+                        "controller-type": args[0]["controller-type"].replace("@", ''),
+                        "build": self.project_type(),
                     }
                 }
             })

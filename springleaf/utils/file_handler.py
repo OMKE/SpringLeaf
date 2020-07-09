@@ -260,7 +260,7 @@ class FileHandler:
     def validate_config_file():
         is_valid = True
         config_attributes = ["build", 'name', 'package',
-                             'structure', 'entities-folder', 'methods']
+                             'structure', 'entities-folder', 'methods', 'controller-type']
         with open(FileHandler.current_dir() + "/springleaf.yaml") as file:
             config = yaml.load(file, Loader=yaml.FullLoader)
             for i in config_attributes:
