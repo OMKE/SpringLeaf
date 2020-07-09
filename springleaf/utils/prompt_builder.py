@@ -34,7 +34,7 @@ class GroupNameValidator(Validator):
 
 
 style = Style([
-    ('separator', 'fg:#fcba03')
+    ('separator', 'fg:#62B73C')
 ])
 
 
