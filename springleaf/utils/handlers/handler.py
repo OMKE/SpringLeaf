@@ -1,13 +1,12 @@
 
 from rich.console import Console
-
-from springleaf.generator import Generator
+from springleaf.base_generator import BaseGenerator
 
 
 class Handler:
 
     def __init__(self, options):
-        self.generator = Generator()
+        self.generator = BaseGenerator()
         self.options = options
 
     """
