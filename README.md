@@ -33,6 +33,16 @@ Some of the features are:
 
 ## Changelog
 
+<details><summary>Version: 0.3</summary>
+    Updates and bugfixes: <br>
+        <ul>
+            <li>Handled KeyboardInterrupt Exceptions</li>
+            <li>Added more checks for checkboxes</li>
+            <li>Added controller-type key so user can choose between @Controller and @RestController</li>
+            <li>Bugfixes</li>
+        </ul>
+
+</details>
 <details><summary>Version: 0.2</summary>
     Feature release: <br>
         <ul>
