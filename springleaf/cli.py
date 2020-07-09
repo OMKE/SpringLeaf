@@ -8,7 +8,6 @@ import springleaf
 from pyfiglet import Figlet
 from questionary import Separator
 from rich.console import Console
-from springleaf.generator import Generator
 from springleaf.utils.exceptions import InvalidConfigFileException
 from springleaf.utils.file_handler import FileHandler
 # Handlers
@@ -17,6 +16,7 @@ from springleaf.utils.handlers.model_handler import ModelHandler
 from springleaf.utils.handlers.spring_initializr_handler import \
     SpringInitializrHandler
 
+from .generator import Generator
 from .utils.exceptions import ModelWithoutAttributesException
 from .utils.java_parser import JavaParser
 from .utils.prompt_builder import PromptBuilder
@@ -60,7 +60,7 @@ class CLI:
         elif self.args["generate"]:
             if FileHandler.has_config_file():
                 if FileHandler.validate_config_file():
-                    self.ask_for_model()
+                    self.ask_for_model_and_files()
                 else:
                     self.console.print("Invalid config file", style="red bold")
             else:
@@ -128,6 +128,7 @@ class CLI:
 
         prompt = PromptBuilder().create_question().set_type("select").set_message("Which project structure to use?").set_name("structure").set_choices(
             self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]) \
+            .create_question().set_type("select").set_message("Which controller type are you using?").set_name("controller-type").set_choices(["@Controller", "@RestController"]) \
             .create_question().set_type("select").set_message("Constructor, getters and setters").set_name("methods").set_choices(["Standard", "Lombok"]) \
             .create_question().set_type("text").set_message(f"Package name of entity models: {package_name}.").set_name("entities").set_validator("NameValidatorEmpty")
 
@@ -135,74 +136,98 @@ class CLI:
 
         prompt.prompt(handle_all=True)
 
-    def ask_for_model(self):
+    def ask_for_model_and_files(self):
         try:
             models = FileHandler.get_model_names()
             prompt = PromptBuilder().create_question().set_type("select") \
                 .set_message("Select entity model from which you want to generate files").set_name("model").set_choices(models) \
                 .set_handler(ModelHandler)
-            selected_file = prompt.prompt(handle=True).answers['model']
+
+            selected_file = None
+            # We are catching KeyError Exception because if users cancel the CLI with CTRL + C, at that time we don't have 'model' key in the dict
+            try:
+                selected_file = prompt.prompt(handle=True).answers['model']
+            except KeyError:
+                # Disable every action below
+                return
             # Parse selected file and show model attributes
             # Instantiate JavaParser
             java_parser = JavaParser()
             attr_choices = []
-
+            # Wrapping in try catch for KeyboardInterrupt Exception
             try:
-                parsed_attrs = java_parser.parse(selected_file + ".java")
-                attr_choices = [attr['type'] + ' ' +
-                                attr['name'] for attr in parsed_attrs]
-            except ModelWithoutAttributesException:
-                self.console.print(
-                    "Exception happened during parsing entity model source code. Aborting", style="red bold")
-                return
-            # Ask for entity attributes which user wants to generate from
-            prompt = PromptBuilder().create_question().set_type("checkbox").set_message("Select entity attributes which you want to generate from").set_name("attributes") \
-                .set_choices(attr_choices).set_handler(ModelHandler)
-            attributes_answer = prompt.prompt(
-                handle=True).answers['attributes']
-
-            # We check if user selected any of the choices
-            if len(attributes_answer) == 0:
-                self.console.print(
-                    "No attributes selected. Aborting!", style="red bold")
-            else:
-                if FileHandler.get_from_config_file('structure') == "Standard":
-                    # Ask user which file he wants to create, All or selected
-                    files_answers = self.ask_for_files("Standard")
-                    # We check if user selected any choice
-                    if len(files_answers) == 0:
-                        self.console.print(
-                            "No files selected. Aborting!", style="red bold")
-                    else:
-                        print("Generating files")
-                elif FileHandler.get_from_config_file('structure') == "Basic":
-
-                    files_answers = self.ask_for_files("Basic")
-                    # We check if user selected any choice
-                    if len(files_answers) == 0:
-                        self.console.print(
-                            "No files selected. Aborting!", style="red bold")
-                    else:
-                        # Generate files
-                        print("Generating files")
-                    # We are generating only that user selected
-                    files_answers = self.ask_for_files("Basic")
-                    # Check if user selected any choice
-                    if len(files_answers) == 0:
-                        self.console.print(
-                            "No files selected. Aborting!", style="red bold")
-                    else:
-                        # If user selected choices, proceed to generate
-                        print("proceed to generate files")
-                elif FileHandler.get_from_config_file('structure') == "Custom":
-                    print("generating for custom")
-                else:
+                try:
+                    parsed_attrs = java_parser.parse(selected_file + ".java")
+                    attr_choices = [attr['type'] + ' ' +
+                                    attr['name'] for attr in parsed_attrs]
+                except ModelWithoutAttributesException:
                     self.console.print(
-                        "Invalid project structure, it has to be either Standard, Basic or Custom", style="red bold")
+                        "Exception happened during parsing entity model source code. Aborting", style="red bold")
+                    return
+                # Ask for entity attributes which user wants to generate from
+                prompt = PromptBuilder().create_question().set_type("checkbox").set_message("Select entity attributes which you want to generate from").set_name("attributes") \
+                    .set_choices(attr_choices).set_handler(ModelHandler)
+                attributes_answer = prompt.prompt(
+                    handle=True).answers['attributes']
 
+                # We check if user selected any of the choices
+                if len(attributes_answer) == 0:
+                    self.console.print(
+                        "No attributes selected. Aborting!", style="red bold")
+                else:
+                    if FileHandler.get_from_config_file('structure') == "Standard":
+                        # Ask user which file he wants to create, All or selected
+                        files_answers = self.ask_for_files("Standard")
+                        # We check if user selected any choice
+                        if len(files_answers) == 0:
+                            self.console.print(
+                                "No files selected. Aborting!", style="red bold")
+                        else:
+                            print("Generating files")
+                            Generator(selected_file, files_answers, self.get_selected_attrs(
+                                parsed_attrs, attributes_answer), "Standard")
+                    elif FileHandler.get_from_config_file('structure') == "Basic":
+
+                        files_answers = self.ask_for_files("Basic")
+                        # We are generating only that user selected
+                        # We check if user selected any choice
+                        if len(files_answers) == 0:
+                            self.console.print(
+                                "No files selected. Aborting!", style="red bold")
+                        else:
+                            # If user selected choices, proceed to generate
+                            Generator(selected_file, files_answers, self.get_selected_attrs(
+                                parsed_attrs, attributes_answer), "Basic")
+                    elif FileHandler.get_from_config_file('structure') == "Custom":
+                        print("generating for custom")
+                    else:
+                        self.console.print(
+                            "Invalid project structure, it has to be either Standard, Basic or Custom", style="red bold")
+            # We are catching if user press Ctrl+C, exception occurs because we want key from argument dict and it doesn't exist if we cancel the CLI
+            except KeyError:
+                pass
         except InvalidConfigFileException:
             self.console.print(
                 "Entity model folder was set but it doesn't exist in path", style="red bold")
+
+    """
+    get_selected_attrs
+    @desc:
+        Filters out attributes that user selected and returns parsed attrs dict
+    @params:
+        parsed_attrs - Parsed attributes from JavaParser, 
+        selected_attrs - Selected attributes from prompt
+    @return: list - list of parsed attributes that user selected
+    """
+
+    def get_selected_attrs(self, parsed_attrs, selected_attrs):
+        filtered = []
+        for i in parsed_attrs:
+            for j in selected_attrs:
+                if i["name"] == j.split(" ")[1]:
+                    filtered.append(i)
+                    break
+        return filtered
 
     """
     ask_for_files
