@@ -15,10 +15,20 @@ class TemplateUtil:
         data - data that template needs
         methods - type of methods we are generating, standard getters and setters or Lombok
         package - package name
+        controller - controller type, RestController or Controller
+        response - return type of controller methods, if user wants to use custom generic class or ResponseEntity
+        entity_name - name of the entity class
     """
 
-    def __init__(self, name: str, data: object, methods: str, package: str):
+    def __init__(self, name: str, template_name: str, data: object, methods: str, package: str, controller: str, response: str, entity_name: str):
         self.name = name
+        self.template_name = template_name
         self.data = data
         self.methods = methods
         self.package = package
+        self.controller = controller
+        self.response = response
+        self.response_clazz = response.split(
+            ".")[-1] if "." in response else "ResponseEntity"
+        self.path = "./src/main/java/" + self.package.replace(".", "/") + "/"
+        self.entity_name = entity_name
