@@ -130,7 +130,8 @@ class CLI:
             self.get_project_structure_names() + [Separator(), {"name": "Don't know which to use?", "disabled": "Check documentation for examples"}]) \
             .create_question().set_type("select").set_message("Which controller type are you using?").set_name("controller-type").set_choices(["@Controller", "@RestController"]) \
             .create_question().set_type("select").set_message("Constructor, getters and setters").set_name("methods").set_choices(["Standard", "Lombok"]) \
-            .create_question().set_type("text").set_message(f"Package name of entity models: {package_name}.").set_name("entities").set_validator("NameValidatorEmpty")
+            .create_question().set_type("text").set_message(f"Package name of entity models: {package_name}.").set_name("entities").set_validator("NameValidatorEmpty") \
+            .create_question().set_type("text").set_message("Return type, if you want to use custom generic response class, type full path, if you want to use RespnseEntity leave blank: ").set_name("response")
 
         prompt.set_handler(InitHandler)
 
