@@ -185,8 +185,15 @@ class CLI:
                                 "No files selected. Aborting!", style="red bold")
                         else:
                             print("Generating files")
-                            Generator(selected_file, files_answers, self.get_selected_attrs(
+                            # Instantiate a generator
+                            generator = Generator(selected_file, files_answers, self.get_selected_attrs(
                                 parsed_attrs, attributes_answer), "Standard")
+                            # List of TemplateUtil, with everything preapred
+                            template_utils = generator.prepare_templates_data()
+                            for i in template_utils:
+                                generator.set_template(
+                                    i.template_name + ".java.j2").set_data(i).set_path(i.path).set_name(i.name + ".java").render().generate()
+
                     elif FileHandler.get_from_config_file('structure') == "Basic":
 
                         files_answers = self.ask_for_files("Basic")
