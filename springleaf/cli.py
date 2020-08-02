@@ -241,7 +241,7 @@ class CLI:
         choices = []
 
         for key in FileHandler.get_project_structure_content(name).keys():
-            if key != "entity":
+            if key != "entity" and key != "response":
                 if key == "dto":
                     key = key.upper()
                 else:
