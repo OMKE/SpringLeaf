@@ -1,0 +1,146 @@
+package {{ data.package }} 
+
+{% if data.controller == "RestController" %}
+import org.springframework.web.bind.annotation.RestController;
+{% else %}
+import org.springframework.stereotype.Controller;
+{% endif -%}
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+{% if data.response == "ResponseEntity" %}
+import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+{% else %}
+import {{ data.response }};
+{% endif %}
+
+
+
+
+{% if data.controller == "RestController" %}
+@RestController
+{% else %}
+@Controller
+{% endif -%}
+@RequestMapping("/api/{{data.entity_name.lower()}}")
+public class {{ data.name }} {
+
+
+    {% if data.response_clazz == "ResponseEntity" %}
+
+
+    /*
+        Return a listing of the resource
+
+    */
+    @GetMapping
+    public ResponseEntity<List<Object>> index() {
+
+        return new ResponseEntity<List<Object>>(null, HttpStatus.OK);
+    }
+
+    /* 
+        Return one resource
+    */
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Object> show(@PathVariable("id") Long id) {
+
+        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    }
+
+
+    /*
+        Store a newly created resource in storage
+        @param - Request class of resource
+        @return - {{ data.response_clazz }}
+    */
+    @PostMapping
+    public ResponseEntity<Object> store() {
+
+        return new ResponseEntity<Object>(null, HttpStatus.CREATED);
+    }
+
+    /*
+        Update an existing resource
+        @param - Long - resource Id 
+        @param  - Add Resource Request param example: FooRequest fooRequest
+    */  
+    @PutMapping(path = "/{id}") 
+    public ResponseEntity<Object> update(@PathVariable("id") Long id){
+
+        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    }
+    
+    /*
+        Delete a resource
+    */
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
+
+        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    }
+
+    
+    {% else %}
+
+
+    /*
+        Return a listing of the resource
+
+    */
+    @GetMapping
+    public {{ data.response_clazz }}<Object> index() {
+
+        return {{ data.response_clazz }};
+    }
+
+    /* 
+        Return one resource
+    */
+    @GetMapping(path = "/{id}")
+    public {{ data.response_clazz }}<Object> show(@PathVariable("id") Long id) {
+
+        return {{ data.response_clazz }};
+    }
+
+
+    /*
+        Store a newly created resource in storage
+        @param - Request class of resource
+        @return - {{ data.response_clazz }}
+    */
+    @PostMapping
+    public {{ data.response_clazz }}<Object> store() {
+
+        return {{ data.response_clazz }};
+    }
+
+    /*
+        Update an existing resource
+    */  
+    @PutMapping(path = "/{id}") 
+    public {{ data.response_clazz }}<Object> update(@PathVariable("id") Long id){
+
+        return {{ data.response_clazz }};
+    }
+    
+    /*
+        Delete a resource
+    */
+    @DeleteMapping(path = "/{id}")
+    public {{ data.response_clazz }}<Object> delete(@PathVariable("id") Long id) {
+
+        return {{ data.response_clazz }};
+    }
+
+    
+    {% endif %}
+
+
+    
+}
