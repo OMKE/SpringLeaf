@@ -12,7 +12,6 @@ class Generator(BaseGenerator):
         self.files = files_to_create
         self.attributes = attributes
         self.structure = structure
-        self.prepare_templates_data()
 
     """
     prepare_templates_data
@@ -29,11 +28,11 @@ class Generator(BaseGenerator):
         # Getting structure content
         structure_content = FileHandler.get_project_structure_content(
             self.structure)
-
+        controller_type = FileHandler.get_from_config_file('controller-type')
+        response = FileHandler.get_from_config_file('response')
         template_utils = []
+
         for i in range(len(self.files)):
-            template_utils.append(TemplateUtil(self.file + self.files[i],
-                                               self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()]))
-        for i in template_utils:
-            print(i.name + " " + i.package)
+            template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
+                                               self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file))
         return template_utils
