@@ -11,6 +11,7 @@ class InitHandler(Handler):
         else:
             structure = FileHandler.get_project_structure(args[0]["structure"])
             pom_file = FileHandler.read_pom_file()
+
             FileHandler.create_config_file({
                 "springleaf": {
                     "project": {
@@ -21,6 +22,7 @@ class InitHandler(Handler):
                         "entities-folder": args[0]["entities"],
                         "controller-type": args[0]["controller-type"].replace("@", ''),
                         "build": self.project_type(),
+                        "response": args[0]['response'] if args[0]['response'] != "" else "ResponseEntity"
                     }
                 }
             })
