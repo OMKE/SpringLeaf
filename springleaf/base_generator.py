@@ -23,14 +23,6 @@ class BaseGenerator:
 
         with open(self.path + self.name, "w") as file:
             file.write(self.output)
-    """
-    #TODO
-    @desc:
-        Selects a directory structure
-    """
-
-    def select_directory_structure(self):
-        pass
 
     def set_template(self, name):
         self.template = jinja2.Template(
