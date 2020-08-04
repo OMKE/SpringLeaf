@@ -43,16 +43,23 @@ class Generator(BaseGenerator):
                 elif "DTO" == self.files[i]:
                     template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
                                                        self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, root_package + "." + structure_content["entity"]))
+                elif "Mapper" == self.files[i]:
+                    template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
+                                                       self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, root_package + "." + structure_content["entity"] + ":" + root_package + "." + structure_content["dto"]))
                 elif "Service" == self.files[i]:
                     template_utils.append(TemplateUtil(self.file + self.files[i] + "Impl", self.files[i] + "Impl",
                                                        self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, root_package + "." + structure_content["repository"]))
+                else:
 
-                template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
-                                                   self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, None))
+                    template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
+                                                       self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, None))
             else:
                 if "Service" == self.files[i]:
                     template_utils.append(TemplateUtil(self.file + self.files[i] + "Impl", self.files[i] + "Impl",
                                                        self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, self.file + "Repository"))
+                elif "Mapper" == self.files[i]:
+                    template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
+                                                       self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, root_package + "." + structure_content["entity"] + ":" + root_package + "." + structure_content["dto"]))
                 else:
                     template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
                                                        self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, None))

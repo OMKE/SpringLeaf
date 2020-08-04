@@ -195,8 +195,10 @@ class CLI:
                                 try:
                                     generator.set_template(
                                         i.template_name + ".java.j2").set_data(i).set_path(i.path).set_name(i.name + ".java").render().generate()
+
                                     self.console.print(
                                         f"{i.name}.java generated successfully.", style="green bold")
+
                                 except GeneratorFileExistsException:
                                     self.console.print(
                                         f"Error: {i.name}.java already exists", style="red bold")
