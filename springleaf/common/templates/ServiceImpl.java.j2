@@ -1,0 +1,84 @@
+package {{ data.package }};
+
+
+import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+{% if data.autowire != None %}
+import org.springframework.beans.factory.annotation.Autowired;
+import {{ data.autowire }}.{{ data.entity_name }}Repository;
+{% endif %}
+
+
+@Service
+public class {{ data.name }} implements {{ data.name[0:-4] }} 
+{
+
+
+    {% if data.autowire != None %}
+@Autowired
+    private {{ data.entity_name }}Repository {{ data.entity_name[0]|lower + data.entity_name[1:] }}Repository;
+    {% endif %}
+
+    /* 
+        Return a listing of the resource
+    */
+
+    @Override
+    public List<Object> index() 
+    {
+        return null;
+    }
+
+    /* 
+        Return one resource
+        @param - Long id - resource id
+    */
+    @Override
+    public Optional<Object> show(Long id) 
+    {
+        return null;
+    }
+
+
+    /*
+        Store a newly created resource in storage
+        @param - Request class of resource
+        @return - {{ data.response_clazz }}
+    */
+    
+    @Transactional
+    @Override
+    public String store(Object object) 
+    {
+        return "Method not implemented";
+    }
+    
+    /*
+        Update an existing resource
+        @param - Long - resource Id 
+        @param  - Add Resource Request param example: FooRequest fooRequest
+    */  
+    @Transactional
+    @Override
+    public String update(Long id, Object object)
+    {
+        return "Method not implemented";
+    }
+
+
+    /*
+        Delete a resource
+        @param - Long - resource Id
+    */
+    @Transactional
+    @Override
+    public String delete(Long id)
+    {
+        return "Method not implemented";
+    }
+
+    
+}

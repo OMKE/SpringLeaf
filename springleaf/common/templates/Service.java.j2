@@ -1,0 +1,17 @@
+package {{ data.package }};
+
+
+import java.util.List;
+import java.util.Optional;
+
+public interface {{ data.name }} 
+{
+
+    List<Object> index();
+    Optional<Object> show(Long id);
+    String store(Object object);
+    String update(Long id, Object object);
+    String delete(Long id);
+
+    
+}
