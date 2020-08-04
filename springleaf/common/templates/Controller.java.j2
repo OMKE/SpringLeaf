@@ -1,4 +1,4 @@
-package {{ data.package }} 
+package {{ data.package }};
 
 {% if data.controller == "RestController" %}
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +19,10 @@ import org.springframework.http.HttpStatus;
 import {{ data.response }};
 {% endif %}
 
+{% if data.autowire != None %}
+import org.springframework.beans.factory.annotation.Autowired;
+import {{ data.autowire }}.{{ data.entity_name }};
+{% endif %}
 
 
 
@@ -28,7 +32,14 @@ import {{ data.response }};
 @Controller
 {% endif -%}
 @RequestMapping("/api/{{data.entity_name.lower()}}")
-public class {{ data.name }} {
+public class {{ data.name }} 
+{
+
+
+    {% if data.autowire != None %}
+@Autowired
+    private {{ data.entity_name }}Service {{ data.entity_name[0]|lower + data.entity_name[1:] }}Service;
+    {% endif %}
 
 
     {% if data.response_clazz == "ResponseEntity" %}
@@ -36,7 +47,6 @@ public class {{ data.name }} {
 
     /*
         Return a listing of the resource
-
     */
     @GetMapping
     public ResponseEntity<List<Object>> index() {
@@ -46,6 +56,7 @@ public class {{ data.name }} {
 
     /* 
         Return one resource
+        @param - Long id - resource id
     */
     @GetMapping(path = "/{id}")
     public ResponseEntity<Object> show(@PathVariable("id") Long id) {
@@ -60,7 +71,7 @@ public class {{ data.name }} {
         @return - {{ data.response_clazz }}
     */
     @PostMapping
-    public ResponseEntity<Object> store() {
+    public ResponseEntity<Object> store(Object object) {
 
         return new ResponseEntity<Object>(null, HttpStatus.CREATED);
     }
@@ -71,7 +82,7 @@ public class {{ data.name }} {
         @param  - Add Resource Request param example: FooRequest fooRequest
     */  
     @PutMapping(path = "/{id}") 
-    public ResponseEntity<Object> update(@PathVariable("id") Long id){
+    public ResponseEntity<Object> update(@PathVariable("id") Long id, Object object){
 
         return new ResponseEntity<Object>(null, HttpStatus.OK);
     }
@@ -115,7 +126,7 @@ public class {{ data.name }} {
         @return - {{ data.response_clazz }}
     */
     @PostMapping
-    public {{ data.response_clazz }}<Object> store() {
+    public {{ data.response_clazz }}<Object> store(Object object) {
 
         return {{ data.response_clazz }};
     }
@@ -124,13 +135,14 @@ public class {{ data.name }} {
         Update an existing resource
     */  
     @PutMapping(path = "/{id}") 
-    public {{ data.response_clazz }}<Object> update(@PathVariable("id") Long id){
+    public {{ data.response_clazz }}<Object> update(@PathVariable("id") Long id, Object object){
 
         return {{ data.response_clazz }};
     }
     
     /*
         Delete a resource
+        @param - Long - resource Id
     */
     @DeleteMapping(path = "/{id}")
     public {{ data.response_clazz }}<Object> delete(@PathVariable("id") Long id) {
