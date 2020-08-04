@@ -25,14 +25,35 @@ Some of the features are:
 
 ## Usage
 
+### Code generation
+
+![spring-code-generation-example-gif](docs/images/generate.gif)
+
 ### SpringInitializr
 
 ![spring-initializr-example-gif](docs/images/spring_initializr.gif)
 
-- @TODO (custom folder structures, params help)
+- @TODO (custom folder structures)
 
 ## Changelog
 
+<details><summary>Version: 0.4.1</summary>
+    Bug fixes in template files: <br>
+        <ul>
+            <li>Fixed import bugs in templates.</li>
+        </ul>
+
+</details>
+<details><summary>Version: 0.4</summary>
+    Main functionality and bug fixes: <br>
+        <ul>
+            <li>Main functionality of generator works.</li>
+            <li>Generate files with standard or basic folder structure.</li>
+            <li>Autowiring when all files are selected for generation.</li>
+            <li>Bugfixes*</li>
+        </ul>
+
+</details>
 <details><summary>Version: 0.3</summary>
     Updates and bugfixes: <br>
         <ul>
