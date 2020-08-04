@@ -4,7 +4,7 @@
     "structure": {
       "entity": "domain.model",
       "repository": "domain.repository",
-      "service": "service",
+      "service": "service.&",
       "exception": "service.exception",
       "dto": "dto.model",
       "response": "dto.response",
