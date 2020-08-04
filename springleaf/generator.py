@@ -33,6 +33,40 @@ class Generator(BaseGenerator):
         template_utils = []
 
         for i in range(len(self.files)):
-            template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
-                                               self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file))
+            if self.autowire():
+                if "Controller" == self.files[i]:
+                    template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
+                                                       self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, root_package + "." + structure_content["service"].replace("&", self.file.lower())))
+                elif "Repository" == self.files[i]:
+                    template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
+                                                       self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, root_package + "." + structure_content["entity"]))
+                elif "DTO" == self.files[i]:
+                    template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
+                                                       self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, root_package + "." + structure_content["entity"]))
+                elif "Service" == self.files[i]:
+                    template_utils.append(TemplateUtil(self.file + self.files[i] + "Impl", self.files[i] + "Impl",
+                                                       self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, root_package + "." + structure_content["repository"]))
+
+                template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
+                                                   self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, None))
+            else:
+                if "Service" == self.files[i]:
+                    template_utils.append(TemplateUtil(self.file + self.files[i] + "Impl", self.files[i] + "Impl",
+                                                       self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, self.file + "Repository"))
+                else:
+                    template_utils.append(TemplateUtil(self.file + self.files[i], self.files[i],
+                                                       self.attributes, methods, root_package + "." + structure_content[self.files[i].lower()], controller_type, response, self.file, None))
         return template_utils
+
+    """
+    autowire
+    @desc:
+        If all files are selected, we can do autowiring automatically
+    @return: boolean - True if all are selected, else False
+    """
+
+    def autowire(self):
+        if len(self.files) == 7:
+            return True
+        else:
+            return False
