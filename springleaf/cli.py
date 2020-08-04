@@ -17,7 +17,8 @@ from springleaf.utils.handlers.spring_initializr_handler import \
     SpringInitializrHandler
 
 from .generator import Generator
-from .utils.exceptions import ModelWithoutAttributesException
+from .utils.exceptions import (GeneratorFileExistsException,
+                               ModelWithoutAttributesException)
 from .utils.java_parser import JavaParser
 from .utils.prompt_builder import PromptBuilder
 
@@ -184,15 +185,21 @@ class CLI:
                             self.console.print(
                                 "No files selected. Aborting!", style="red bold")
                         else:
-                            print("Generating files")
                             # Instantiate a generator
                             generator = Generator(selected_file, files_answers, self.get_selected_attrs(
                                 parsed_attrs, attributes_answer), "Standard")
                             # List of TemplateUtil, with everything preapred
                             template_utils = generator.prepare_templates_data()
+
                             for i in template_utils:
-                                generator.set_template(
-                                    i.template_name + ".java.j2").set_data(i).set_path(i.path).set_name(i.name + ".java").render().generate()
+                                try:
+                                    generator.set_template(
+                                        i.template_name + ".java.j2").set_data(i).set_path(i.path).set_name(i.name + ".java").render().generate()
+                                    self.console.print(
+                                        f"{i.name}.java generated successfully.", style="green bold")
+                                except GeneratorFileExistsException:
+                                    self.console.print(
+                                        f"Error: {i.name}.java already exists", style="red bold")
 
                     elif FileHandler.get_from_config_file('structure') == "Basic":
 
