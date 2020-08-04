@@ -1,0 +1,21 @@
+package {{ data.package }};
+
+{% if data.autowire != None %}
+import {{ data.autowire.split(":")[0] }}.{{ data.entity_name }};
+import {{ data.autowire.split(":")[1] }}.{{ data.entity_name }}DTO;
+{% endif %}
+
+
+public class {{ data.name }} 
+{
+    public static {{ data.entity_name }}DTO map{{ data.entity_name }}({{ data.entity_name }} {{ data.entity_name[0]|lower + data.entity_name[1:] }})
+    {
+        return new {{ data.entity_name }}DTO()
+            {%- for i in data.data -%}
+            .set{{ i.name[0]|upper + i.name[1:] }}({{ data.entity_name[0]|lower + data.entity_name[1:] }}.{% if i.type|lower != "boolean" %}get{% else %}is{% endif %}{{ i.name[0]|upper + i.name[1:] }}){% if loop.last %};{% endif %}
+            {%- endfor %}
+
+
+    }
+}
+
