@@ -21,12 +21,16 @@ class BaseGenerator:
         if self.name is None:
             raise GeneratorFileNameNotFoundException
 
-        with open(self.path + self.name, "w") as file:
-            file.write(self.output)
+        try:
+            with open(self.path + self.name, "w") as file:
+                file.write(self.output)
+        except FileNotFoundError:
+            FileHandler.create_folder_structure(self.path)
+            self.generate()
 
     def set_template(self, name):
         self.template = jinja2.Template(
-            FileHandler.get_template_file(name))
+            FileHandler.get_template_file(name), trim_blocks=True)
         return self
 
     def set_data(self, data):
