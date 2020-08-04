@@ -19,19 +19,26 @@ SpringLeaf is All In One CLI for your Spring Boot Applications <br>
 Some of the features are:
 
 <ul>
-    <li>Generating DTOs, Repositories, Services, Request and Response classes out of Entity model</li>
+    <li>Generating DTOs, Repositories, Services, Request and Mapper classes out of Entity model</li>
     <li>Initializing new Spring Boot project with SpringInitializr - Maven, Gradle (not yet supported)</li>
 </ul>
 
 ## Usage
 
+### Setup
+
+How to set-up initial configuration file for your preference.
+<img src="./docs/images/init.gif" width="850">
+
 ### Code generation
 
-![spring-code-generation-example-gif](docs/images/generate.gif)
+How to generate files.  
+<img src="./docs/images/generate.gif" width="850">
 
 ### SpringInitializr
 
-![spring-initializr-example-gif](docs/images/spring_initializr.gif)
+How to create new SpringBoot project.  
+<img src="./docs/images/spring_initializr.gif" width="850">
 
 - @TODO (custom folder structures)
 
