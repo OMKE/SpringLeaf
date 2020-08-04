@@ -1,0 +1,113 @@
+
+package {{ data.package }};
+
+{% for i in data.data -%}
+{% if "List" == i.type %}
+import java.util.List;
+import java.util.ArrayList;
+{% endif %}
+{% if "ArrayList" == i.type %}
+import java.util.ArrayList;
+{% endif %}
+{% if "Set" == i.type %}
+import java.util.Set;
+{% endif %}
+{% if "HashSet" == i.type %}
+import java.util.HashSet;
+{% endif %}
+{% if "HashTable" == i.type %}
+import java.util.HashTable;
+{% endif %}
+{% if "LinkedList" == i.type %}
+import java.util.LinkedList;
+{% endif %}
+{% if "Map" == i.type %}
+import java.util.Map;
+{% endif %}
+{% if "HashMap" == i.type %}
+import java.util.HashMap;
+{% endif %}
+{% if "Queue" == i.type %}
+import java.util.Queue;
+{% endif %}
+{% if "Enumeration" == i.type %}
+import java.util.Enumeration;
+{% endif %}
+{% if "Date" == i.type %}
+import java.util.Date;
+{% endif %}
+{% if "Currency" == i.type %}
+import java.util.Currency;
+{% endif %}
+{% endfor %}
+
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+{%if data.methods != "Lombok" and data.autowire != None %}
+import {{ data.autowire }}.{{ entity_name }};
+{% endif %}
+
+{% if data.methods == "Lombok" %}
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
+
+@Getter
+@Setter
+@Accessors(chain = true)
+@NoArgsConstructor
+@ToString
+{% endif %}
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class {{ data.name }} {
+
+    {% for i in data.data -%}
+            
+        private {{ i.type }}{% if i.sub_types|length != 0 %}<{{ i.sub_types|join(", ") }}>{% endif %} {{ i.name }}{% if i.sub_types|length != 0 %} = new {% if i.type == "List" %}ArrayList<{{ i.sub_types|join(", ") }}>{% endif %}{% if i.type == "Set" %}HashSet<{{ i.sub_types|join(", ") }}>{% endif %}{% if i.type == "HashMap" %}HashMap<{{ i.sub_types|join(", ") }}>{% endif %}() {% endif %};
+
+    {% endfor %}
+
+{% if data.methods != "Lombok" %}
+    public {{ data.name }}(){}
+
+    public {{ data.name }}({{ data.name[0:-3] }} {{ data.name[0]|lower + data.name[1:-3] }})
+    {
+    {% for i in data.data -%}
+
+    {% if i.type|lower == "boolean" %}
+    this.{{ i.name }} = {{ data.name[0]|lower + data.name[1:-3] }}.is{{ i.name[0]|upper + i.name[1:] }}();
+    {% else %}
+    this.{{ i.name }} = {{ data.name[0]|lower + data.name[1:-3] }}.get{{ i.name[0]|upper + i.name[1:] }}();
+    {% endif %}
+
+    {%- endfor %}
+}
+
+{% for i in data.data %}
+    public {{ i.type }} {% if i.type|lower != "boolean" %}get{% else %}is{% endif %}{{ i.name[0]|upper + i.name[1:] }}()
+    {
+        return this.{{ i.name }};
+    }
+
+    public {{ data.name }} set{{ i.name[0]|upper + i.name[1:] }}({{ i.type }}{% if i.sub_types|length != 0 %}<{{ i.sub_types|join(", ") }}>{% endif %} {{ i.name[0]|lower + i.name[1:] }})
+    {
+        this.{{ i.name }} = {{ i.name[0]|lower + i.name[1:] }};
+        return this;
+    }
+
+
+{% endfor %}
+{% endif %}
+
+
+
+
+    
+}
+
+
