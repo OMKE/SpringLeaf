@@ -1,0 +1,14 @@
+package {{ data.package }};
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+{% if data.autowire != None %}
+import {{ data.autowire }}.{{ data.entity_name }};
+{% endif %}
+
+@Repository
+public interface {{ data.name }} extends CrudRepository<{{ data.entity_name }}, Long>
+{
+
+}
