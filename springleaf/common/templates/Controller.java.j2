@@ -21,7 +21,7 @@ import {{ data.response }};
 
 {% if data.autowire != None %}
 import org.springframework.beans.factory.annotation.Autowired;
-import {{ data.autowire }}.{{ data.entity_name }};
+import {{ data.autowire }}.{{ data.entity_name }}Service;
 {% endif %}
 
 
